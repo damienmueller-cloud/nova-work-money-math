@@ -1,0 +1,119 @@
+---
+import type { Calculator } from '../data/calculators';
+
+interface Props {
+  calculator: Calculator;
+}
+
+const { calculator } = Astro.props;
+const inputsJson = JSON.stringify(calculator.inputs);
+---
+
+<div
+  class="calc-widget"
+  data-slug={calculator.slug}
+  data-result-label={calculator.resultLabel}
+  data-result-format={calculator.resultFormat}
+  data-result-prefix={calculator.resultPrefix ?? ''}
+  data-result-suffix={calculator.resultSuffix ?? ''}
+  data-inputs={inputsJson}
+>
+  <form class="calc-form" novalidate>
+    {
+      calculator.inputs.map((input) => (
+        <div class="field">
+          <label for={`${calculator.slug}-${input.id}`}>
+            {input.label}
+            {input.help && <span class="hint"> — {input.help}</span>}
+          </label>
+          <input
+            id={`${calculator.slug}-${input.id}`}
+            name={input.id}
+            type="number"
+            inputmode="decimal"
+            value={input.defaultValue}
+            min={input.min}
+            max={input.max}
+            step={input.step ?? 'any'}
+            required
+            data-prefix={input.prefix ?? ''}
+            data-suffix={input.suffix ?? ''}
+          />
+        </div>
+      ))
+    }
+  </form>
+
+  <div class="result-box" aria-live="polite">
+    <div class="label">{calculator.resultLabel}</div>
+    <div class="value" data-result-primary>—</div>
+    <ul class="breakdown" data-result-breakdown></ul>
+    <p class="hint" data-result-error hidden></p>
+  </div>
+
+  {
+    calculator.illustrative && (
+      <div class="disclaimer" role="note">
+        Illustrative estimate only — not tax, financial, or legal advice. Rules vary by location and situation.
+      </div>
+    )
+  }
+</div>
+
+<script>
+  import { computeMap } from '../lib/compute';
+  import { formatValue, type FormatKind } from '../lib/format';
+
+  function initWidget(root: HTMLElement) {
+    const slug = root.dataset.slug!;
+    const format = (root.dataset.resultFormat || 'number') as FormatKind;
+    const prefix = root.dataset.resultPrefix || '';
+    const suffix = root.dataset.resultSuffix || '';
+    const form = root.querySelector('.calc-form') as HTMLFormElement;
+    const primaryEl = root.querySelector('[data-result-primary]') as HTMLElement;
+    const breakdownEl = root.querySelector('[data-result-breakdown]') as HTMLElement;
+    const errorEl = root.querySelector('[data-result-error]') as HTMLElement;
+    const compute = computeMap[slug];
+
+    if (!compute || !form) return;
+
+    const recalc = () => {
+      const values: Record<string, number> = {};
+      const inputs = form.querySelectorAll('input[name]');
+      inputs.forEach((el) => {
+        const input = el as HTMLInputElement;
+        values[input.name] = Number(input.value);
+      });
+
+      const result = compute(values);
+      if (result.error) {
+        primaryEl.textContent = '—';
+        breakdownEl.innerHTML = '';
+        errorEl.hidden = false;
+        errorEl.textContent = result.error;
+        return;
+      }
+
+      errorEl.hidden = true;
+      errorEl.textContent = '';
+      primaryEl.textContent = formatValue(result.primary, result.format || format, prefix, suffix);
+
+      breakdownEl.innerHTML = '';
+      for (const row of result.breakdown ?? []) {
+        const li = document.createElement('li');
+        const label = document.createElement('span');
+        label.textContent = row.label;
+        const strong = document.createElement('strong');
+        strong.textContent = formatValue(row.value, row.format);
+        li.append(label, strong);
+        breakdownEl.append(li);
+      }
+    };
+
+    form.addEventListener('input', recalc);
+    form.addEventListener('change', recalc);
+    recalc();
+  }
+
+  document.querySelectorAll<HTMLElement>('.calc-widget').forEach(initWidget);
+</script>

@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+---
+
+<BaseLayout
+  title="Page not found — Work & Money Math"
+  description="That page does not exist. Browse free freelance calculators on Work & Money Math."
+  canonicalPath="/404"
+>
+  <section class="not-found panel">
+    <h1>404</h1>
+    <p>That calculator or page was not found.</p>
+    <p><a href={base}>Back to all calculators</a></p>
+  </section>
+</BaseLayout>

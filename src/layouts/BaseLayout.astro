@@ -1,0 +1,109 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { title, description, canonicalPath = '/', jsonLd } = Astro.props;
+const base = import.meta.env.BASE_URL; // e.g. /nova-work-money-math/
+const withBase = (path: string) => {
+  const root = base.endsWith('/') ? base : `${base}/`;
+  const clean = path.replace(/^\/+/, '');
+  return clean ? `${root}${clean}` : root;
+};
+const canonical = new URL(withBase(canonicalPath).replace(/^\/+/, ''), Astro.site).toString();
+const siteName = 'Work & Money Math';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={withBase('favicon.svg')} />
+    <link rel="icon" href={withBase('favicon.ico')} />
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('wmm-theme');
+          if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {}
+      })();
+    </script>
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container inner">
+        <a class="brand" href={withBase('')}>
+          <strong>Work &amp; Money Math</strong>
+          <span>Free calculators for freelancers</span>
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <a href={withBase('')}>Calculators</a>
+          <a href={withBase('about')}>About</a>
+          <a href={withBase('privacy')}>Privacy</a>
+          <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme">
+            Theme
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="site-main">
+      <div class="container">
+        <slot />
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container inner">
+        <p>
+          Free client-side tools. No accounts. Numbers are for planning only — tax and take-home figures are
+          <strong>illustrative estimates, not advice</strong>.
+        </p>
+        <p>
+          This site may show ads or affiliate links in the future to stay free. No tracking of calculator inputs.
+        </p>
+        <nav aria-label="Footer">
+          <a href={withBase('')}>Home</a>
+          <a href={withBase('about')}>About</a>
+          <a href={withBase('privacy')}>Privacy</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script>
+      const btn = document.getElementById('theme-toggle');
+      btn?.addEventListener('click', () => {
+        const root = document.documentElement;
+        const current = root.getAttribute('data-theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const effective = current ?? (prefersDark ? 'dark' : 'light');
+        const next = effective === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try {
+          localStorage.setItem('wmm-theme', next);
+        } catch {}
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+---
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { calculators, getCalculatorsByCategory } from '../data/calculators';
+
+const grouped = getCalculatorsByCategory();
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Work & Money Math',
+  url: new URL(import.meta.env.BASE_URL, Astro.site).toString(),
+  description:
+    'Free client-side calculators for freelancers and side hustlers — rates, runway, fees, and illustrative take-home toys.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: new URL(import.meta.env.BASE_URL + 'c/{slug}', Astro.site).toString(),
+    'query-input': 'required name=slug',
+  },
+};
+---
+
+<BaseLayout
+  title="Work & Money Math — Free Freelance Calculators"
+  description="Free calculator hub for freelancers and side hustlers. Day rates, platform fees, runway, GST helpers, and more. Client-side only — no accounts."
+  canonicalPath="/"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="badge-row">
+      <span class="badge">Free</span>
+      <span class="badge">Client-side</span>
+      <span class="badge">{calculators.length} calculators</span>
+    </div>
+    <h1>Work &amp; Money Math</h1>
+    <p>
+      Calm, practical calculators for solo freelancers and side hustlers. Instant results in your browser —
+      no sign-up, no paid APIs. Tax tools are labelled as illustrative estimates, not advice.
+    </p>
+  </section>
+
+  {
+    grouped.map(({ category, items }) => (
+      <section class="category-block" aria-labelledby={`cat-${category.replace(/\s+/g, '-').toLowerCase()}`}>
+        <h2 id={`cat-${category.replace(/\s+/g, '-').toLowerCase()}`}>{category}</h2>
+        <div class="card-grid">
+          {items.map((calc) => (
+            <a class="card" href={`${base}c/${calc.slug}`}>
+              <h3>{calc.title}</h3>
+              <p>{calc.description}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))
+  }
+</BaseLayout>
