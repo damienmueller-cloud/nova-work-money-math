@@ -1,5 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL;
+const withBase = (path: string) => {
+  const root = base.endsWith('/') ? base : `${base}/`;
+  const clean = path.replace(/^\/+/, '');
+  return clean ? `${root}${clean}` : root;
+};
 ---
 
 <BaseLayout
@@ -28,6 +35,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <p>
       The site may later include privacy-friendly analytics, ads, or affiliate links so it can stay free. Any
       paid “Pro” features would be optional extras (for example exports), not a paywall on the core math.
+    </p>
+    <h2>Monetization status</h2>
+    <p>
+      Ads and affiliates are <strong>not live yet</strong>. When they are, they will be disclosed. See the
+      <a href={withBase('monetization')}>monetization &amp; disclosures</a> page for the scaffold and rules —
+      no fake claims of live revenue features.
     </p>
   </article>
 </BaseLayout>

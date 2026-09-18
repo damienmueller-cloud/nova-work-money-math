@@ -260,4 +260,88 @@ export const computeMap: Record<string, ComputeFn> = {
       ],
     };
   },
+
+  'listed-rate-after-platform-fee': (v) => {
+    const denom = 1 - v.feePercent / 100;
+    if (denom <= 0) return { primary: 0, format: 'currency', error: 'Platform fee must be under 100%.' };
+    if (v.target <= 0) return { primary: 0, format: 'currency', error: 'Enter a positive target amount.' };
+    const listed = v.target / denom;
+    const fee = listed - v.target;
+    return {
+      primary: listed,
+      format: 'currency',
+      breakdown: [
+        { label: 'Platform keeps', value: fee, format: 'currency' },
+        { label: 'You receive (target)', value: v.target, format: 'currency' },
+      ],
+    };
+  },
+
+  'payment-terms-cash-gap': (v) => {
+    const gap = v.monthlyBilling * (v.termsDays / 30);
+    return {
+      primary: gap,
+      format: 'currency',
+      breakdown: [
+        { label: 'Monthly billing', value: v.monthlyBilling, format: 'currency' },
+        { label: 'Terms (days)', value: v.termsDays, format: 'days' },
+      ],
+    };
+  },
+
+  'annual-income-from-weekly-hours': (v) => {
+    const weekly = v.hours * v.rate;
+    const annual = weekly * v.weeks;
+    return {
+      primary: annual,
+      format: 'currency',
+      breakdown: [
+        { label: 'Weekly gross', value: weekly, format: 'currency' },
+        { label: 'Working weeks', value: v.weeks, format: 'number' },
+      ],
+    };
+  },
+
+  'discount-hit-on-fee': (v) => {
+    const discounted = v.fee * (1 - v.discount / 100);
+    const givenAway = v.fee - discounted;
+    return {
+      primary: discounted,
+      format: 'currency',
+      breakdown: [
+        { label: 'Revenue given away', value: givenAway, format: 'currency' },
+        { label: 'Discount applied', value: v.discount, format: 'percent' },
+      ],
+    };
+  },
+
+  'invoice-tax-set-aside': (v) => {
+    const aside = v.invoice * (v.rate / 100);
+    const keep = v.invoice - aside;
+    return {
+      primary: aside,
+      format: 'currency',
+      breakdown: [
+        { label: 'Left after set-aside', value: keep, format: 'currency' },
+        { label: 'Set-aside rate', value: v.rate, format: 'percent' },
+      ],
+    };
+  },
+
+  'hours-freed-by-rate-raise': (v) => {
+    const oldHours = safeDiv(v.goal, v.oldRate);
+    const newHours = safeDiv(v.goal, v.newRate);
+    if (oldHours === null || newHours === null) {
+      return { primary: 0, format: 'hours', error: 'Rates and income goal must be greater than zero.' };
+    }
+    const freed = oldHours - newHours;
+    return {
+      primary: freed,
+      format: 'hours',
+      breakdown: [
+        { label: 'Hours at old rate', value: oldHours, format: 'hours' },
+        { label: 'Hours at new rate', value: newHours, format: 'hours' },
+      ],
+    };
+  },
 };

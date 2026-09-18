@@ -86,7 +86,7 @@ export const calculators: Calculator[] = [
     resultFormat: 'currency',
     explainer:
       'Platforms often take a percentage of the client payment. This shows fee amount and your net before tax. Raise your listed rate if you need a specific take-home after fees.',
-    relatedSlugs: ['hourly-to-project-fee', 'take-home-simple-percent', 'gst-add-remove'],
+    relatedSlugs: ['listed-rate-after-platform-fee', 'hourly-to-project-fee', 'take-home-simple-percent'],
     seoTitle: 'Platform Fee Calculator for Freelancers',
     seoDescription: 'Calculate how much a platform fee removes from your freelance payout.',
   },
@@ -138,7 +138,7 @@ export const calculators: Calculator[] = [
     resultFormat: 'months',
     explainer:
       'Cash ÷ monthly burn. Useful before quitting a job or during slow seasons. Increase runway by cutting burn or building a larger cash buffer.',
-    relatedSlugs: ['savings-rate', 'break-even-hourly', 'side-hustle-hourly-value'],
+    relatedSlugs: ['payment-terms-cash-gap', 'savings-rate', 'break-even-hourly'],
     seoTitle: 'Cash Runway Months Calculator',
     seoDescription: 'Estimate how many months your savings last at a given burn rate.',
   },
@@ -291,7 +291,7 @@ export const calculators: Calculator[] = [
     resultFormat: 'hours',
     explainer:
       'Monthly goal ÷ rate ÷ weeks. If hours look unrealistic, raise your rate or lower the goal before burning out.',
-    relatedSlugs: ['break-even-hourly', 'day-rate-from-salary', 'effective-hourly-after-unpaid-admin'],
+    relatedSlugs: ['hours-freed-by-rate-raise', 'annual-income-from-weekly-hours', 'break-even-hourly'],
     seoTitle: 'Weekly Hours to Hit Income Goal',
     seoDescription: 'Calculate billable hours per week needed to reach a monthly income goal.',
   },
@@ -344,9 +344,114 @@ export const calculators: Calculator[] = [
     resultFormat: 'percent',
     explainer:
       'Profit ÷ revenue. Direct costs might include contractors, stock, ads, or paid tools for that job. Fixed overhead is usually tracked separately.',
-    relatedSlugs: ['side-hustle-hourly-value', 'platform-fee-cut', 'savings-rate'],
+    relatedSlugs: ['side-hustle-hourly-value', 'platform-fee-cut', 'discount-hit-on-fee'],
     seoTitle: 'Job Profit Margin Calculator',
     seoDescription: 'Calculate profit margin on a freelance or side-hustle job after direct costs.',
+  },
+  {
+    slug: 'listed-rate-after-platform-fee',
+    title: 'Listed rate after platform fee',
+    description: 'What to list so you still net your target after a marketplace fee.',
+    category: 'Invoicing & fees',
+    inputs: [
+      { id: 'target', label: 'Target amount you want to receive', defaultValue: 800, min: 0.01, step: 10, prefix: '$' },
+      { id: 'feePercent', label: 'Platform fee', defaultValue: 20, min: 0, max: 99.9, step: 0.1, suffix: '%' },
+    ],
+    resultLabel: 'List / quote this amount',
+    resultFormat: 'currency',
+    explainer:
+      'listed = target ÷ (1 − fee%). Common when Upwork, Fiverr, or similar take a cut and you still need a specific net. Pair with platform-fee-cut to sanity-check.',
+    relatedSlugs: ['platform-fee-cut', 'hourly-to-project-fee', 'take-home-simple-percent'],
+    seoTitle: 'Listed Rate After Platform Fee Calculator',
+    seoDescription: 'Find the freelance list price that still nets your target after a platform fee percentage.',
+  },
+  {
+    slug: 'payment-terms-cash-gap',
+    title: 'Payment terms cash gap',
+    description: 'How much invoice cash sits unpaid under Net-X terms.',
+    category: 'Cashflow & runway',
+    inputs: [
+      { id: 'monthlyBilling', label: 'Average monthly billing', defaultValue: 8000, min: 0, step: 50, prefix: '$' },
+      { id: 'termsDays', label: 'Payment terms (days)', defaultValue: 30, min: 0, step: 1, help: 'Net-15 = 15, Net-30 = 30, etc.' },
+    ],
+    resultLabel: 'Cash typically outstanding',
+    resultFormat: 'currency',
+    explainer:
+      'Rough working-capital stuck in receivables: monthly billing × (terms days ÷ 30). Shorter terms or deposits shrink the gap; Net-60 roughly doubles Net-30 exposure.',
+    relatedSlugs: ['runway-months', 'invoice-late-fee', 'invoice-tax-set-aside'],
+    seoTitle: 'Payment Terms Cash Gap Calculator',
+    seoDescription: 'Estimate freelancing cash tied up in unpaid invoices under Net-X payment terms.',
+  },
+  {
+    slug: 'annual-income-from-weekly-hours',
+    title: 'Annual income from weekly hours',
+    description: 'Project yearly gross from weekly billable hours and hourly rate.',
+    category: 'Hours & productivity',
+    inputs: [
+      { id: 'hours', label: 'Billable hours / week', defaultValue: 25, min: 0, step: 0.5 },
+      { id: 'rate', label: 'Hourly rate', defaultValue: 90, min: 0, step: 1, prefix: '$' },
+      { id: 'weeks', label: 'Working weeks / year', defaultValue: 46, min: 1, max: 52, step: 1, help: 'Leave room for holidays and sick days (~46 is common).' },
+    ],
+    resultLabel: 'Projected annual gross',
+    resultFormat: 'currency',
+    explainer:
+      'hours × rate × weeks. Use realistic billable hours and weeks off. Compare to day-rate-from-salary if you are pricing from a salary target instead.',
+    relatedSlugs: ['weekly-hours-to-hit-income-goal', 'day-rate-from-salary', 'break-even-hourly'],
+    seoTitle: 'Annual Income from Weekly Billable Hours',
+    seoDescription: 'Estimate yearly freelance income from weekly hours, hourly rate, and working weeks.',
+  },
+  {
+    slug: 'discount-hit-on-fee',
+    title: 'Discount hit on a fee',
+    description: 'See the dollar and percent impact of offering a client discount.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'fee', label: 'Original fee', defaultValue: 3000, min: 0, step: 10, prefix: '$' },
+      { id: 'discount', label: 'Discount', defaultValue: 10, min: 0, max: 100, step: 0.5, suffix: '%' },
+    ],
+    resultLabel: 'Discounted fee',
+    resultFormat: 'currency',
+    explainer:
+      'Shows the discounted total and how many dollars you give away. A “small” 10% cut on a fixed fee is permanent revenue lost unless you reclaim scope or volume.',
+    relatedSlugs: ['profit-margin-on-job', 'hourly-to-project-fee', 'retainer-to-hourly-equivalent'],
+    seoTitle: 'Client Discount Impact Calculator',
+    seoDescription: 'Calculate how a percentage discount changes your freelance project fee.',
+  },
+  {
+    slug: 'invoice-tax-set-aside',
+    title: 'Invoice tax set-aside',
+    description: 'How much of each invoice to park for tax at your effective rate.',
+    category: 'Take-home & tax toys',
+    inputs: [
+      { id: 'invoice', label: 'Invoice amount (ex GST if separate)', defaultValue: 2200, min: 0, step: 10, prefix: '$' },
+      { id: 'rate', label: 'Set-aside rate', defaultValue: 30, min: 0, max: 100, step: 0.5, suffix: '%', help: 'Many freelancers use 25–40% as a planning buffer.' },
+    ],
+    resultLabel: 'Amount to set aside',
+    resultFormat: 'currency',
+    illustrative: true,
+    explainer:
+      'invoice × set-aside %. Transfer that amount to a tax savings account when paid. Illustrative planning toy — not tax advice; actual liability depends on deductions, brackets, and jurisdiction.',
+    relatedSlugs: ['take-home-simple-percent', 'gst-add-remove', 'payment-terms-cash-gap'],
+    seoTitle: 'Freelance Invoice Tax Set-Aside Calculator',
+    seoDescription: 'Estimate how much of each freelance invoice to set aside for tax. Illustrative only.',
+  },
+  {
+    slug: 'hours-freed-by-rate-raise',
+    title: 'Hours freed by a rate raise',
+    description: 'How many weekly hours you can drop after raising your rate and keep the same income.',
+    category: 'Hours & productivity',
+    inputs: [
+      { id: 'goal', label: 'Weekly income to keep', defaultValue: 2000, min: 0.01, step: 25, prefix: '$' },
+      { id: 'oldRate', label: 'Current hourly rate', defaultValue: 80, min: 0.01, step: 1, prefix: '$' },
+      { id: 'newRate', label: 'New hourly rate', defaultValue: 100, min: 0.01, step: 1, prefix: '$' },
+    ],
+    resultLabel: 'Hours freed per week',
+    resultFormat: 'hours',
+    explainer:
+      'oldHours = goal ÷ oldRate; newHours = goal ÷ newRate; freed = old − new. Raising rates is often the cleanest way to buy back time without cutting income.',
+    relatedSlugs: ['weekly-hours-to-hit-income-goal', 'effective-hourly-after-unpaid-admin', 'break-even-hourly'],
+    seoTitle: 'Hours Freed by Raising Your Freelance Rate',
+    seoDescription: 'See how many weekly billable hours a rate increase frees while keeping the same income.',
   },
 ];
 

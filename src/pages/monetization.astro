@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL;
+const withBase = (path: string) => {
+  const root = base.endsWith('/') ? base : `${base}/`;
+  const clean = path.replace(/^\/+/, '');
+  return clean ? `${root}${clean}` : root;
+};
+---
+
+<BaseLayout
+  title="Monetization & disclosures — Work & Money Math"
+  description="How Work & Money Math may be supported later: ads, affiliates, optional Pro. No live ads claimed yet."
+  canonicalPath="/monetization"
+>
+  <article class="prose panel">
+    <h1>Monetization &amp; disclosures</h1>
+    <p>
+      <strong>Work &amp; Money Math</strong> is free to use. This page is a disclosure scaffold for how the
+      site <em>may</em> be funded later — not a claim that ads or affiliates are live today.
+    </p>
+
+    <h2>Current status (honest)</h2>
+    <ul>
+      <li>Core calculators are free and run in your browser.</li>
+      <li>
+        <strong>No advertising network is enabled on this build</strong> unless this page and the footer say
+        otherwise.
+      </li>
+      <li>No affiliate links are active unless labelled as such on the page that contains them.</li>
+    </ul>
+
+    <h2>Possible future support</h2>
+    <ol>
+      <li>
+        <strong>Privacy-conscious ads</strong> — only after meaningful organic traffic. If enabled, we will
+        name the provider here and update the <a href={withBase('privacy')}>privacy</a> page.
+      </li>
+      <li>
+        <strong>Affiliate links</strong> — tools freelancers already search for (invoicing, banking,
+        productivity). Paid referrals will be disclosed next to the link.
+      </li>
+      <li>
+        <strong>Optional Pro unlock</strong> — one-time extras (for example CSV export or saved scenarios),
+        never a paywall on the core math.
+      </li>
+    </ol>
+
+    <h2>What we will not do</h2>
+    <ul>
+      <li>Fake “sponsored” badges or pretend ads are live when they are not.</li>
+      <li>Sell calculator inputs (they stay on your device for the math).</li>
+      <li>Cross-promote unrelated brands on this site.</li>
+    </ul>
+
+    <p>
+      Questions? See <a href={withBase('about')}>About</a>. Tax and take-home tools remain
+      <strong>illustrative estimates, not advice</strong>.
+    </p>
+  </article>
+</BaseLayout>
