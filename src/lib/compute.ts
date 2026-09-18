@@ -344,4 +344,72 @@ export const computeMap: Record<string, ComputeFn> = {
       ],
     };
   },
+
+  'monthly-to-hourly-rate': (v) => {
+    const rate = safeDiv(v.monthly, v.hours);
+    if (rate === null) return { primary: 0, format: 'currency', error: 'Enter billable hours greater than zero.' };
+    return {
+      primary: rate,
+      format: 'currency',
+      breakdown: [
+        { label: 'Monthly goal', value: v.monthly, format: 'currency' },
+        { label: 'Billable hours', value: v.hours, format: 'hours' },
+      ],
+    };
+  },
+
+  'tax-set-aside-percent': (v) => {
+    const aside = v.gross * (v.percent / 100);
+    const keep = v.gross - aside;
+    return {
+      primary: aside,
+      format: 'currency',
+      breakdown: [
+        { label: 'Left after set-aside', value: keep, format: 'currency' },
+        { label: 'Set-aside rate', value: v.percent, format: 'percent' },
+      ],
+    };
+  },
+
+  'net-30-cash-cost': (v) => {
+    const cost = v.amount * (v.rate / 100) * (v.days / 365);
+    return {
+      primary: cost,
+      format: 'currency',
+      breakdown: [
+        { label: 'Invoice amount', value: v.amount, format: 'currency' },
+        { label: 'Days delayed', value: v.days, format: 'days' },
+      ],
+    };
+  },
+
+  'vacation-buffer-day-rate': (v) => {
+    if (!(v.leaveDays < v.billableDays)) {
+      return { primary: 0, format: 'currency', error: 'Leave days must be less than billable days if no leave.' };
+    }
+    const working = v.billableDays - v.leaveDays;
+    const rate = safeDiv(v.income, working);
+    if (rate === null) return { primary: 0, format: 'currency', error: 'Enter a positive number of working days after leave.' };
+    return {
+      primary: rate,
+      format: 'currency',
+      breakdown: [
+        { label: 'Working days after leave', value: working, format: 'days' },
+        { label: 'Unpaid leave days', value: v.leaveDays, format: 'days' },
+      ],
+    };
+  },
+
+  'client-concentration-risk': (v) => {
+    if (v.total <= 0) return { primary: 0, format: 'percent', error: 'Total revenue must be greater than zero.' };
+    const pct = (100 * v.top) / v.total;
+    return {
+      primary: pct,
+      format: 'percent',
+      breakdown: [
+        { label: 'Top client revenue', value: v.top, format: 'currency' },
+        { label: 'Total revenue', value: v.total, format: 'currency' },
+      ],
+    };
+  },
 };

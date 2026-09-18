@@ -51,7 +51,7 @@ export const calculators: Calculator[] = [
     resultFormat: 'currency',
     explainer:
       'Divide your annual income goal by the number of days you expect to bill. Build in non-billable time (admin, sales, leave) by using fewer billable days rather than padding the salary figure twice.',
-    relatedSlugs: ['hourly-to-project-fee', 'break-even-hourly', 'weekly-hours-to-hit-income-goal'],
+    relatedSlugs: ['hourly-to-project-fee', 'vacation-buffer-day-rate', 'weekly-hours-to-hit-income-goal'],
     seoTitle: 'Day Rate from Salary Calculator',
     seoDescription: 'Convert an annual salary into a freelance day rate using billable days per year.',
   },
@@ -104,7 +104,7 @@ export const calculators: Calculator[] = [
     illustrative: true,
     explainer:
       'Applies a single effective percentage to gross income. Real tax depends on jurisdiction, deductions, brackets, and credits. Use only as a planning toy — not tax advice.',
-    relatedSlugs: ['raise-needed-to-keep-net', 'contractor-vs-employee-gross-rough', 'gst-add-remove'],
+    relatedSlugs: ['raise-needed-to-keep-net', 'tax-set-aside-percent', 'gst-add-remove'],
     seoTitle: 'Simple Take-Home Pay Estimator',
     seoDescription: 'Illustrative take-home estimate using a flat effective tax percentage. Not tax advice.',
   },
@@ -121,7 +121,7 @@ export const calculators: Calculator[] = [
     resultFormat: 'currency',
     explainer:
       'Divide the money you need each month by realistic billable hours. Anything above this rate funds profit, tax set-asides, and buffer.',
-    relatedSlugs: ['day-rate-from-salary', 'weekly-hours-to-hit-income-goal', 'runway-months'],
+    relatedSlugs: ['day-rate-from-salary', 'monthly-to-hourly-rate', 'runway-months'],
     seoTitle: 'Break-Even Hourly Rate Calculator',
     seoDescription: 'Find the minimum freelance hourly rate to cover monthly costs.',
   },
@@ -138,7 +138,7 @@ export const calculators: Calculator[] = [
     resultFormat: 'months',
     explainer:
       'Cash ÷ monthly burn. Useful before quitting a job or during slow seasons. Increase runway by cutting burn or building a larger cash buffer.',
-    relatedSlugs: ['payment-terms-cash-gap', 'savings-rate', 'break-even-hourly'],
+    relatedSlugs: ['payment-terms-cash-gap', 'client-concentration-risk', 'break-even-hourly'],
     seoTitle: 'Cash Runway Months Calculator',
     seoDescription: 'Estimate how many months your savings last at a given burn rate.',
   },
@@ -156,7 +156,7 @@ export const calculators: Calculator[] = [
     resultFormat: 'currency',
     explainer:
       'Uses simple interest: amount × annual rate × (days / 365). Check local rules and your contract before charging. Some jurisdictions cap or prohibit late fees.',
-    relatedSlugs: ['platform-fee-cut', 'gst-add-remove', 'hourly-to-project-fee'],
+    relatedSlugs: ['platform-fee-cut', 'net-30-cash-cost', 'hourly-to-project-fee'],
     seoTitle: 'Invoice Late Fee Calculator',
     seoDescription: 'Estimate a simple-interest late fee on an overdue freelance invoice.',
   },
@@ -452,6 +452,95 @@ export const calculators: Calculator[] = [
     relatedSlugs: ['weekly-hours-to-hit-income-goal', 'effective-hourly-after-unpaid-admin', 'break-even-hourly'],
     seoTitle: 'Hours Freed by Raising Your Freelance Rate',
     seoDescription: 'See how many weekly billable hours a rate increase frees while keeping the same income.',
+  },
+
+  {
+    slug: 'monthly-to-hourly-rate',
+    title: 'Monthly to hourly rate',
+    description: 'Turn a monthly income goal and billable hours into an hourly rate.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'monthly', label: 'Monthly income goal', defaultValue: 6000, min: 0, step: 50, prefix: '$' },
+      { id: 'hours', label: 'Billable hours / month', defaultValue: 80, min: 0.1, step: 1 },
+    ],
+    resultLabel: 'Hourly rate needed',
+    resultFormat: 'currency',
+    explainer:
+      'Monthly goal ÷ billable hours. Use realistic billable hours (not every hour at the desk). Pair with break-even hourly if you also need to cover fixed costs.',
+    relatedSlugs: ['break-even-hourly', 'weekly-hours-to-hit-income-goal', 'retainer-to-hourly-equivalent'],
+    seoTitle: 'Monthly Income to Hourly Rate Calculator',
+    seoDescription: 'Convert a monthly income goal and billable hours into the hourly rate you need.',
+  },
+  {
+    slug: 'tax-set-aside-percent',
+    title: 'Tax set-aside percent',
+    description: 'How much of gross income to park at your chosen set-aside percentage.',
+    category: 'Take-home & tax toys',
+    inputs: [
+      { id: 'gross', label: 'Gross income', defaultValue: 5000, min: 0, step: 50, prefix: '$' },
+      { id: 'percent', label: 'Set-aside percentage', defaultValue: 30, min: 0, max: 100, step: 0.5, suffix: '%', help: 'Many freelancers plan with 25–40% as a buffer.' },
+    ],
+    resultLabel: 'Amount to set aside',
+    resultFormat: 'currency',
+    illustrative: true,
+    explainer:
+      'gross × set-aside %. Move that amount to a tax savings pot when paid. Illustrative planning toy — not tax advice; real liability depends on deductions, brackets, and jurisdiction.',
+    relatedSlugs: ['take-home-simple-percent', 'invoice-tax-set-aside', 'gst-add-remove'],
+    seoTitle: 'Tax Set-Aside Percentage Calculator',
+    seoDescription: 'Estimate how much of gross income to set aside at a chosen percentage. Illustrative only — not tax advice.',
+  },
+  {
+    slug: 'net-30-cash-cost',
+    title: 'Net-30 cash cost',
+    description: 'Opportunity cost of waiting on an invoice at your annual rate of return.',
+    category: 'Invoicing & fees',
+    inputs: [
+      { id: 'amount', label: 'Invoice amount', defaultValue: 3000, min: 0, step: 10, prefix: '$' },
+      { id: 'rate', label: 'Annual opportunity rate', defaultValue: 8, min: 0, max: 100, step: 0.1, suffix: '%', help: 'What that cash could earn elsewhere (e.g. savings / investment proxy).' },
+      { id: 'days', label: 'Days delayed', defaultValue: 30, min: 0, step: 1 },
+    ],
+    resultLabel: 'Cost of waiting',
+    resultFormat: 'currency',
+    explainer:
+      'amount × (annual rate ÷ 100) × (days ÷ 365). Shows the soft cost of Net-30 / slow pay versus getting paid today. Not a late fee — use invoice-late-fee for contract interest.',
+    relatedSlugs: ['invoice-late-fee', 'payment-terms-cash-gap', 'runway-months'],
+    seoTitle: 'Net-30 Invoice Cash Cost Calculator',
+    seoDescription: 'Estimate the opportunity cost of waiting on Net-30 or delayed freelance invoices.',
+  },
+  {
+    slug: 'vacation-buffer-day-rate',
+    title: 'Vacation buffer day rate',
+    description: 'Day rate that still hits your annual goal after unpaid leave days.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'income', label: 'Annual income goal', defaultValue: 90000, min: 0, step: 1000, prefix: '$' },
+      { id: 'leaveDays', label: 'Unpaid leave days', defaultValue: 20, min: 0, max: 364, step: 1 },
+      { id: 'billableDays', label: 'Billable days if no leave', defaultValue: 220, min: 1, max: 365, step: 1, help: 'Working days available before subtracting leave.' },
+    ],
+    resultLabel: 'Adjusted day rate',
+    resultFormat: 'currency',
+    explainer:
+      'income ÷ (billableDays − leaveDays). Prices leave into your rate so holidays do not silently cut annual income. Leave days must be less than available billable days.',
+    relatedSlugs: ['day-rate-from-salary', 'contractor-vs-employee-gross-rough', 'break-even-hourly'],
+    seoTitle: 'Vacation Buffer Day Rate Calculator',
+    seoDescription: 'Adjust your freelance day rate so unpaid leave still leaves room for your annual income goal.',
+  },
+  {
+    slug: 'client-concentration-risk',
+    title: 'Client concentration risk',
+    description: 'What share of revenue comes from your largest client.',
+    category: 'Cashflow & runway',
+    inputs: [
+      { id: 'top', label: 'Top client revenue', defaultValue: 40000, min: 0, step: 100, prefix: '$' },
+      { id: 'total', label: 'Total revenue (same period)', defaultValue: 100000, min: 0.01, step: 100, prefix: '$' },
+    ],
+    resultLabel: 'Concentration',
+    resultFormat: 'percent',
+    explainer:
+      '100 × top client ÷ total revenue. High concentration (often flagged above ~30–40%) means one lost client can smash cashflow — diversify or keep a thicker runway.',
+    relatedSlugs: ['runway-months', 'savings-rate', 'payment-terms-cash-gap'],
+    seoTitle: 'Client Concentration Risk Calculator',
+    seoDescription: 'Calculate what percentage of revenue comes from your top client to gauge concentration risk.',
   },
 ];
 
