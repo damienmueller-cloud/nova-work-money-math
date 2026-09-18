@@ -21,17 +21,17 @@ npm run build
 npm run preview
 ```
 
-## Cloudflare Pages
+## Live site (GitHub Pages)
 
-| Setting | Value |
-|--------|--------|
-| Build command | `npm run build` |
-| Output directory | `dist` |
-| Node version | `22` (or newer) |
+**URL:** https://damienmueller-cloud.github.io/nova-work-money-math/
 
-Optional `site` URL is set in `astro.config.mjs` (`https://workmoneymath.pages.dev`). Change it when you attach a custom domain.
+| Item | Value |
+|------|--------|
+| Code branch | `main` |
+| Site branch | `gh-pages` (contents of `dist/`) |
+| `site` / `base` | set in `astro.config.mjs` for project Pages |
 
-Do not deploy from this box unless Wrangler is already authenticated for the target account.
+Redeploy: `npm run build`, then publish `dist/` to the `gh-pages` branch (see vault `plan.md`). Custom domain later is optional — not required for the free site to work.
 
 ## Project layout
 
