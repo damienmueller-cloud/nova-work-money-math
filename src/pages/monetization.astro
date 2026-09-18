@@ -11,14 +11,14 @@ const withBase = (path: string) => {
 
 <BaseLayout
   title="Monetization & disclosures — Work & Money Math"
-  description="How Work & Money Math may be supported later: ads, affiliates, optional Pro. No live ads claimed yet."
+  description="How Work & Money Math may be supported later: ads, affiliates, optional Pro. No live ads or affiliate links claimed yet."
   canonicalPath="/monetization"
 >
   <article class="prose panel">
     <h1>Monetization &amp; disclosures</h1>
     <p>
-      <strong>Work &amp; Money Math</strong> is free to use. This page is a disclosure scaffold for how the
-      site <em>may</em> be funded later — not a claim that ads or affiliates are live today.
+      <strong>Work &amp; Money Math</strong> is free to use. This page is the disclosure home for how the site
+      <em>may</em> be funded later — not a claim that ads or affiliates are live today.
     </p>
 
     <h2>Current status (honest)</h2>
@@ -29,17 +29,26 @@ const withBase = (path: string) => {
         otherwise.
       </li>
       <li>No affiliate links are active unless labelled as such on the page that contains them.</li>
+      <li>Calculator inputs stay on your device for the math; we do not sell them.</li>
     </ul>
+
+    <h2>When support may appear</h2>
+    <p>
+      We only consider ads or affiliates after meaningful organic traffic (roughly sustained ~1,000+ sessions
+      per month or a clear growing trend). Until then, the site stays free tools only (Stage 0).
+    </p>
 
     <h2>Possible future support</h2>
     <ol>
       <li>
-        <strong>Privacy-conscious ads</strong> — only after meaningful organic traffic. If enabled, we will
-        name the provider here and update the <a href={withBase('privacy')}>privacy</a> page.
+        <strong>Privacy-conscious ads</strong> — e.g. Google AdSense or a developer-friendly network such as
+        Carbon Ads. If enabled, we will name the provider here and update the
+        <a href={withBase('privacy')}>privacy</a> page.
       </li>
       <li>
-        <strong>Affiliate links</strong> — tools freelancers already search for (invoicing, banking,
-        productivity). Paid referrals will be disclosed next to the link.
+        <strong>Affiliate links</strong> — tools freelancers already search for (invoicing such as FreshBooks
+        or Wave, business banking / accounts, Notion or similar productivity). Paid referrals will be disclosed
+        next to the link — never as fake “recommended” without a clear label.
       </li>
       <li>
         <strong>Optional Pro unlock</strong> — one-time extras (for example CSV export or saved scenarios),
@@ -47,11 +56,19 @@ const withBase = (path: string) => {
       </li>
     </ol>
 
+    <h2>Placement rules (if ads or affiliates go live)</h2>
+    <ul>
+      <li>Non-intrusive: after a calculator result or below the fold — not covering inputs or results.</li>
+      <li>No interstitial or fake-close patterns.</li>
+      <li>Affiliate copy will say when a link may earn a commission.</li>
+      <li>No cross-promotion of unrelated brands on this site.</li>
+    </ul>
+
     <h2>What we will not do</h2>
     <ul>
       <li>Fake “sponsored” badges or pretend ads are live when they are not.</li>
-      <li>Sell calculator inputs (they stay on your device for the math).</li>
-      <li>Cross-promote unrelated brands on this site.</li>
+      <li>Sell calculator inputs.</li>
+      <li>Claim tax, financial, or legal advice — take-home tools stay illustrative estimates.</li>
     </ul>
 
     <p>

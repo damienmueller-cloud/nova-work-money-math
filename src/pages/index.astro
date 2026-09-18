@@ -2,8 +2,12 @@
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { calculators, getCalculatorsByCategory } from '../data/calculators';
+import { allHubLinks } from '../data/audiences';
 
 const grouped = getCalculatorsByCategory();
+
+const audienceLinks = allHubLinks();
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -36,6 +40,21 @@ const jsonLd = {
       Calm, practical calculators for solo freelancers and side hustlers. Instant results in your browser —
       no sign-up, no paid APIs. Tax tools are labelled as illustrative estimates, not advice.
     </p>
+  </section>
+
+
+  <section class="category-block" aria-labelledby="audience-hubs">
+    <h2 id="audience-hubs">Browse by audience</h2>
+    <div class="card-grid">
+      {
+        audienceLinks.map((hub) => (
+          <a class="card" href={`${base}${hub.href.replace(/^\/+/, '')}`}>
+            <h3>{hub.label}</h3>
+            <p>{hub.blurb}</p>
+          </a>
+        ))
+      }
+    </div>
   </section>
 
   {
