@@ -412,4 +412,67 @@ export const computeMap: Record<string, ComputeFn> = {
       ],
     };
   },
+  'hourly-from-day-rate': (v) => {
+    const rate = safeDiv(v.dayRate, v.hours);
+    if (rate === null) return { primary: 0, format: 'currency', error: 'Enter hours in a billable day greater than zero.' };
+    return {
+      primary: rate,
+      format: 'currency',
+      breakdown: [
+        { label: 'Day rate', value: v.dayRate, format: 'currency' },
+        { label: 'Hours per day', value: v.hours, format: 'hours' },
+      ],
+    };
+  },
+
+  'billable-utilization': (v) => {
+    if (v.total <= 0) return { primary: 0, format: 'percent', error: 'Total hours must be greater than zero.' };
+    const pct = (100 * v.billable) / v.total;
+    return {
+      primary: pct,
+      format: 'percent',
+      breakdown: [
+        { label: 'Billable hours', value: v.billable, format: 'hours' },
+        { label: 'Total hours', value: v.total, format: 'hours' },
+      ],
+    };
+  },
+
+  'subcontractor-markup': (v) => {
+    const price = v.cost * (1 + v.markup / 100);
+    const margin = price - v.cost;
+    return {
+      primary: price,
+      format: 'currency',
+      breakdown: [
+        { label: 'Your margin', value: margin, format: 'currency' },
+        { label: 'Markup applied', value: v.markup, format: 'percent' },
+      ],
+    };
+  },
+
+  'breakeven-projects-per-month': (v) => {
+    const n = safeDiv(v.costs, v.avgFee);
+    if (n === null) return { primary: 0, format: 'number', error: 'Average project fee must be greater than zero.' };
+    return {
+      primary: n,
+      format: 'number',
+      breakdown: [
+        { label: 'Monthly costs', value: v.costs, format: 'currency' },
+        { label: 'Average project fee', value: v.avgFee, format: 'currency' },
+      ],
+    };
+  },
+
+  'scope-creep-hours-cost': (v) => {
+    const cost = v.hours * v.rate;
+    return {
+      primary: cost,
+      format: 'currency',
+      breakdown: [
+        { label: 'Extra hours', value: v.hours, format: 'hours' },
+        { label: 'Hourly rate', value: v.rate, format: 'currency' },
+      ],
+    };
+  },
 };

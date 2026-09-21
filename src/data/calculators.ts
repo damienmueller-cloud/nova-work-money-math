@@ -542,6 +542,91 @@ export const calculators: Calculator[] = [
     seoTitle: 'Client Concentration Risk Calculator',
     seoDescription: 'Calculate what percentage of revenue comes from your top client to gauge concentration risk.',
   },
+  {
+    slug: 'hourly-from-day-rate',
+    title: 'Hourly from day rate',
+    description: 'Convert a day rate into an equivalent hourly rate for quotes and comparisons.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'dayRate', label: 'Day rate', defaultValue: 750, min: 0, step: 10, prefix: '$' },
+      { id: 'hours', label: 'Hours in a billable day', defaultValue: 7.5, min: 0.1, max: 24, step: 0.5, help: 'Many freelancers use 7–8 hours; some quote on 6.' },
+    ],
+    resultLabel: 'Equivalent hourly',
+    resultFormat: 'currency',
+    explainer:
+      'Day rate ÷ hours in a billable day. Useful when a client asks for hourly, or when comparing retainers and platforms that price by the hour.',
+    relatedSlugs: ['day-rate-from-salary', 'monthly-to-hourly-rate', 'retainer-to-hourly-equivalent'],
+    seoTitle: 'Day Rate to Hourly Rate Calculator',
+    seoDescription: 'Convert a freelance day rate into an equivalent hourly rate using hours in a billable day.',
+  },
+  {
+    slug: 'billable-utilization',
+    title: 'Billable utilization',
+    description: 'What share of your worked hours were actually billable.',
+    category: 'Hours & productivity',
+    inputs: [
+      { id: 'billable', label: 'Billable hours', defaultValue: 25, min: 0, step: 0.5 },
+      { id: 'total', label: 'Total hours worked', defaultValue: 40, min: 0.01, step: 0.5, help: 'Include admin, sales, and unpaid work.' },
+    ],
+    resultLabel: 'Utilization',
+    resultFormat: 'percent',
+    explainer:
+      '100 × billable ÷ total hours. Healthy freelance utilization often lands around 50–70% once sales and admin are honest. Low utilization means raise rates or cut unpaid work.',
+    relatedSlugs: ['effective-hourly-after-unpaid-admin', 'hours-freed-by-rate-raise', 'weekly-hours-to-hit-income-goal'],
+    seoTitle: 'Billable Utilization Rate Calculator',
+    seoDescription: 'Calculate freelance billable utilization as billable hours divided by total hours worked.',
+  },
+  {
+    slug: 'subcontractor-markup',
+    title: 'Subcontractor markup',
+    description: 'Price a client fee after marking up outsourced or subcontracted costs.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'cost', label: 'Subcontractor / vendor cost', defaultValue: 2000, min: 0, step: 50, prefix: '$' },
+      { id: 'markup', label: 'Markup', defaultValue: 25, min: 0, max: 500, step: 1, suffix: '%', help: 'Common agency markups sit around 15–40%.' },
+    ],
+    resultLabel: 'Client price',
+    resultFormat: 'currency',
+    explainer:
+      'cost × (1 + markup %). Your margin is the markup amount — make sure it covers your coordination time, risk, and payment delays.',
+    relatedSlugs: ['profit-margin-on-job', 'hourly-to-project-fee', 'discount-hit-on-fee'],
+    seoTitle: 'Subcontractor Markup Calculator',
+    seoDescription: 'Mark up a subcontractor or vendor cost to set the client price and your margin.',
+  },
+  {
+    slug: 'breakeven-projects-per-month',
+    title: 'Break-even projects / month',
+    description: 'How many average projects you need each month to cover fixed costs.',
+    category: 'Cashflow & runway',
+    inputs: [
+      { id: 'costs', label: 'Monthly fixed costs / draw', defaultValue: 5000, min: 0, step: 50, prefix: '$' },
+      { id: 'avgFee', label: 'Average project fee (net)', defaultValue: 2500, min: 0.01, step: 50, prefix: '$', help: 'After platform fees if you sell on marketplaces.' },
+    ],
+    resultLabel: 'Projects needed',
+    resultFormat: 'number',
+    explainer:
+      'Monthly costs ÷ average net project fee. Round up in real life — partial projects do not pay rent. Pair with runway months if pipeline is lumpy.',
+    relatedSlugs: ['break-even-hourly', 'runway-months', 'profit-margin-on-job'],
+    seoTitle: 'Break-Even Projects Per Month Calculator',
+    seoDescription: 'Find how many average freelance projects you need each month to cover fixed costs.',
+  },
+  {
+    slug: 'scope-creep-hours-cost',
+    title: 'Scope creep hours cost',
+    description: 'What unpaid extra hours are worth at your hourly rate.',
+    category: 'Hours & productivity',
+    inputs: [
+      { id: 'hours', label: 'Extra unpaid hours', defaultValue: 8, min: 0, step: 0.5 },
+      { id: 'rate', label: 'Hourly rate', defaultValue: 95, min: 0, step: 1, prefix: '$' },
+    ],
+    resultLabel: 'Value of creep',
+    resultFormat: 'currency',
+    explainer:
+      'Extra hours × hourly rate. Use this number in change-order talks or to decide whether a “quick favour” is actually a discount you did not mean to give.',
+    relatedSlugs: ['hourly-to-project-fee', 'discount-hit-on-fee', 'effective-hourly-after-unpaid-admin'],
+    seoTitle: 'Scope Creep Cost Calculator',
+    seoDescription: 'Estimate the dollar cost of unpaid scope-creep hours at your freelance hourly rate.',
+  },
 ];
 
 export function getCalculator(slug: string): Calculator | undefined {
