@@ -627,6 +627,93 @@ export const calculators: Calculator[] = [
     seoTitle: 'Scope Creep Cost Calculator',
     seoDescription: 'Estimate the dollar cost of unpaid scope-creep hours at your freelance hourly rate.',
   },
+  {
+    slug: 'rush-rate-premium',
+    title: 'Rush rate premium',
+    description: 'Mark up your hourly rate for rush, weekend, or overtime work.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'base', label: 'Base hourly rate', defaultValue: 90, min: 0, step: 1, prefix: '$' },
+      { id: 'premium', label: 'Rush / overtime premium', defaultValue: 50, min: 0, max: 500, step: 1, suffix: '%', help: 'Common rush premiums sit around 25–100%.' },
+    ],
+    resultLabel: 'Rush hourly rate',
+    resultFormat: 'currency',
+    explainer:
+      'Base rate × (1 + premium %). Quote the rush rate before you start — clients rarely object once the calendar is already crushed.',
+    relatedSlugs: ['hourly-to-project-fee', 'scope-creep-hours-cost', 'discount-hit-on-fee'],
+    seoTitle: 'Rush Rate Premium Calculator',
+    seoDescription: 'Calculate a freelance rush or overtime hourly rate from your base rate and a premium percentage.',
+  },
+  {
+    slug: 'proposal-expected-value',
+    title: 'Proposal expected value',
+    description: 'Expected dollar value of writing a proposal given your win rate.',
+    category: 'Side hustle',
+    inputs: [
+      { id: 'fee', label: 'Project fee if won', defaultValue: 4000, min: 0, step: 50, prefix: '$' },
+      { id: 'winRate', label: 'Win rate', defaultValue: 25, min: 0, max: 100, step: 1, suffix: '%' },
+      { id: 'hours', label: 'Hours to write proposal', defaultValue: 3, min: 0, step: 0.25, help: 'Include research and revisions.' },
+    ],
+    resultLabel: 'Expected value',
+    resultFormat: 'currency',
+    explainer:
+      'Project fee × win rate. Compare that to hours spent pitching to decide whether a lead is worth chasing, or whether your proposal process needs to get shorter.',
+    relatedSlugs: ['profit-margin-on-job', 'effective-hourly-after-unpaid-admin', 'breakeven-projects-per-month'],
+    seoTitle: 'Proposal Expected Value Calculator',
+    seoDescription: 'Estimate the expected value of a freelance proposal from project fee, win rate, and hours spent pitching.',
+  },
+  {
+    slug: 'overhead-loaded-hourly',
+    title: 'Overhead-loaded hourly',
+    description: 'Add monthly business overhead onto your base hourly rate.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'base', label: 'Base hourly rate', defaultValue: 80, min: 0, step: 1, prefix: '$' },
+      { id: 'overhead', label: 'Monthly overhead', defaultValue: 800, min: 0, step: 25, prefix: '$', help: 'Software, insurance, coworking, accounting, etc.' },
+      { id: 'hours', label: 'Billable hours / month', defaultValue: 80, min: 0.1, step: 1 },
+    ],
+    resultLabel: 'Loaded hourly rate',
+    resultFormat: 'currency',
+    explainer:
+      'Base rate + (monthly overhead ÷ billable hours). Pricing only on labour leaves tools and admin unpaid — load them in so every hour funds the business.',
+    relatedSlugs: ['break-even-hourly', 'monthly-to-hourly-rate', 'effective-hourly-after-unpaid-admin'],
+    seoTitle: 'Overhead-Loaded Hourly Rate Calculator',
+    seoDescription: 'Load monthly freelancing overhead onto your hourly rate using realistic billable hours.',
+  },
+  {
+    slug: 'annual-from-day-rate',
+    title: 'Annual income from day rate',
+    description: 'Turn a day rate and billable days into an annual income estimate.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'dayRate', label: 'Day rate', defaultValue: 750, min: 0, step: 10, prefix: '$' },
+      { id: 'days', label: 'Billable days per year', defaultValue: 200, min: 0, max: 365, step: 1, help: 'After leave, sick days, and non-billable work.' },
+    ],
+    resultLabel: 'Annual income',
+    resultFormat: 'currency',
+    explainer:
+      'Day rate × billable days. The reverse of day-rate-from-salary — useful when a client quotes a day rate and you want the yearly picture before saying yes.',
+    relatedSlugs: ['day-rate-from-salary', 'hourly-from-day-rate', 'annual-income-from-weekly-hours'],
+    seoTitle: 'Annual Income from Day Rate Calculator',
+    seoDescription: 'Estimate annual freelance income from day rate and billable days per year.',
+  },
+  {
+    slug: 'deposit-cash-cover',
+    title: 'Deposit cash cover',
+    description: 'How large a project deposit needs to be to cover early costs and first weeks of work.',
+    category: 'Cashflow & runway',
+    inputs: [
+      { id: 'fee', label: 'Total project fee', defaultValue: 8000, min: 0.01, step: 50, prefix: '$' },
+      { id: 'costs', label: 'Upfront costs + early labour', defaultValue: 2400, min: 0, step: 50, prefix: '$', help: 'Materials, subcontractors, and hours you will bill before the next invoice.' },
+    ],
+    resultLabel: 'Deposit needed',
+    resultFormat: 'percent',
+    explainer:
+      '100 × (upfront costs ÷ project fee). Round up to a clean 30–50% deposit in real quotes so you are not financing the client’s project from your own cash.',
+    relatedSlugs: ['payment-terms-cash-gap', 'net-30-cash-cost', 'runway-months'],
+    seoTitle: 'Project Deposit Percentage Calculator',
+    seoDescription: 'Find what percentage deposit covers your upfront costs and early labour on a freelance project.',
+  },
 ];
 
 export function getCalculator(slug: string): Calculator | undefined {

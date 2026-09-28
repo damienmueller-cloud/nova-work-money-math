@@ -475,4 +475,70 @@ export const computeMap: Record<string, ComputeFn> = {
       ],
     };
   },
+
+  'rush-rate-premium': (v) => {
+    const rate = v.base * (1 + v.premium / 100);
+    const extra = rate - v.base;
+    return {
+      primary: rate,
+      format: 'currency',
+      breakdown: [
+        { label: 'Premium amount', value: extra, format: 'currency' },
+        { label: 'Premium %', value: v.premium, format: 'percent' },
+      ],
+    };
+  },
+
+  'proposal-expected-value': (v) => {
+    const ev = v.fee * (v.winRate / 100);
+    const perHour = v.hours > 0 ? ev / v.hours : 0;
+    return {
+      primary: ev,
+      format: 'currency',
+      breakdown: [
+        { label: 'Expected $/proposal-hour', value: perHour, format: 'currency' },
+        { label: 'Hours pitching', value: v.hours, format: 'hours' },
+        { label: 'Win rate used', value: v.winRate, format: 'percent' },
+      ],
+    };
+  },
+
+  'overhead-loaded-hourly': (v) => {
+    const load = safeDiv(v.overhead, v.hours);
+    if (load === null) return { primary: 0, format: 'currency', error: 'Enter billable hours greater than zero.' };
+    const rate = v.base + load;
+    return {
+      primary: rate,
+      format: 'currency',
+      breakdown: [
+        { label: 'Overhead per hour', value: load, format: 'currency' },
+        { label: 'Base rate', value: v.base, format: 'currency' },
+      ],
+    };
+  },
+
+  'annual-from-day-rate': (v) => {
+    const income = v.dayRate * v.days;
+    return {
+      primary: income,
+      format: 'currency',
+      breakdown: [
+        { label: 'Day rate', value: v.dayRate, format: 'currency' },
+        { label: 'Billable days', value: v.days, format: 'days' },
+      ],
+    };
+  },
+
+  'deposit-cash-cover': (v) => {
+    if (v.fee <= 0) return { primary: 0, format: 'percent', error: 'Project fee must be greater than zero.' };
+    const pct = (100 * v.costs) / v.fee;
+    return {
+      primary: pct,
+      format: 'percent',
+      breakdown: [
+        { label: 'Dollar deposit to cover costs', value: v.costs, format: 'currency' },
+        { label: 'Project fee', value: v.fee, format: 'currency' },
+      ],
+    };
+  },
 };
