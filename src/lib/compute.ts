@@ -541,4 +541,74 @@ export const computeMap: Record<string, ComputeFn> = {
       ],
     };
   },
+
+  'raise-vs-client-loss': (v) => {
+    const r = v.raise / 100;
+    if (r < 0) return { primary: 0, format: 'percent', error: 'Enter a rate rise of zero or more.' };
+    const loss = (100 * r) / (1 + r);
+    const newRate = v.rate * (1 + r);
+    return {
+      primary: loss,
+      format: 'percent',
+      breakdown: [
+        { label: 'New hourly rate', value: newRate, format: 'currency' },
+        { label: 'Rate rise', value: v.raise, format: 'percent' },
+      ],
+    };
+  },
+
+  'emergency-fund-target': (v) => {
+    const target = v.essentials * v.months;
+    const gap = Math.max(0, target - v.saved);
+    const covered = safeDiv(v.saved, v.essentials);
+    return {
+      primary: target,
+      format: 'currency',
+      breakdown: [
+        { label: 'Gap to target', value: gap, format: 'currency' },
+        { label: 'Months covered now', value: covered ?? 0, format: 'months' },
+      ],
+    };
+  },
+
+  'tool-subscription-payback': (v) => {
+    const value = v.hoursSaved * v.hourly;
+    const net = value - v.cost;
+    const breakEven = safeDiv(v.cost, v.hourly);
+    return {
+      primary: net,
+      format: 'currency',
+      breakdown: [
+        { label: 'Value of time saved', value, format: 'currency' },
+        { label: 'Hours needed to break even', value: breakEven ?? 0, format: 'hours' },
+      ],
+    };
+  },
+
+  'side-hustle-goal-weeks': (v) => {
+    const weekly = v.hourly * v.hoursPerWeek;
+    const weeks = safeDiv(v.goal, weekly);
+    if (weeks === null || weeks < 0) return { primary: 0, format: 'number', error: 'Enter net earnings and weekly hours above zero.' };
+    return {
+      primary: weeks,
+      format: 'number',
+      breakdown: [
+        { label: 'Weekly net earnings', value: weekly, format: 'currency' },
+        { label: 'Total hours needed', value: safeDiv(v.goal, v.hourly) ?? 0, format: 'hours' },
+      ],
+    };
+  },
+
+  'travel-time-cost': (v) => {
+    const timeCost = v.hours * v.hourly;
+    const runCost = v.km * v.perKm;
+    return {
+      primary: timeCost + runCost,
+      format: 'currency',
+      breakdown: [
+        { label: 'Time cost', value: timeCost, format: 'currency' },
+        { label: 'Vehicle running cost', value: runCost, format: 'currency' },
+      ],
+    };
+  },
 };

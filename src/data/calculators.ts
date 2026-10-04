@@ -714,6 +714,98 @@ export const calculators: Calculator[] = [
     seoTitle: 'Project Deposit Percentage Calculator',
     seoDescription: 'Find what percentage deposit covers your upfront costs and early labour on a freelance project.',
   },
+  {
+    slug: 'raise-vs-client-loss',
+    title: 'Rate raise vs client loss',
+    description: 'How much work you could lose after a rate rise and still earn the same.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'rate', label: 'Current hourly rate', defaultValue: 80, min: 0, step: 1, prefix: '$' },
+      { id: 'raise', label: 'Planned rate rise', defaultValue: 20, min: 0, max: 500, step: 1, suffix: '%' },
+    ],
+    resultLabel: 'Work you could lose and break even',
+    resultFormat: 'percent',
+    explainer:
+      'Break-even loss = raise ÷ (1 + raise). A 20% rise means you can lose about 16.7% of billable hours and still earn the same, while freeing that time for better clients or rest.',
+    relatedSlugs: ['hours-freed-by-rate-raise', 'raise-needed-to-keep-net', 'client-concentration-risk'],
+    seoTitle: 'Rate Increase vs Client Loss Calculator',
+    seoDescription: 'See what share of work you can lose after raising freelance rates and still earn the same.',
+  },
+  {
+    slug: 'emergency-fund-target',
+    title: 'Emergency fund target',
+    description: 'Size a cash buffer from monthly essentials and see the gap to your current savings.',
+    category: 'Cashflow & runway',
+    inputs: [
+      { id: 'essentials', label: 'Monthly essential costs', defaultValue: 3500, min: 0, step: 50, prefix: '$', help: 'Rent, food, insurance, minimum debt payments, core business costs.' },
+      { id: 'months', label: 'Months of cover', defaultValue: 6, min: 0, max: 36, step: 1, help: 'Variable-income earners often aim for 3–6+ months.' },
+      { id: 'saved', label: 'Already set aside', defaultValue: 8000, min: 0, step: 100, prefix: '$' },
+    ],
+    resultLabel: 'Emergency fund target',
+    resultFormat: 'currency',
+    explainer:
+      'Monthly essentials × months of cover. The breakdown shows how far your current savings are from that target. Illustrative only, not financial advice.',
+    relatedSlugs: ['runway-months', 'savings-rate', 'client-concentration-risk'],
+    seoTitle: 'Emergency Fund Calculator for Freelancers',
+    seoDescription: 'Work out an emergency fund target from monthly essentials and months of cover, plus the gap to your savings.',
+    illustrative: true,
+  },
+  {
+    slug: 'tool-subscription-payback',
+    title: 'Tool subscription payback',
+    description: 'Check if a paid tool pays for itself in hours saved each month.',
+    category: 'Hours & productivity',
+    inputs: [
+      { id: 'cost', label: 'Monthly subscription cost', defaultValue: 30, min: 0, step: 1, prefix: '$' },
+      { id: 'hoursSaved', label: 'Hours saved per month', defaultValue: 3, min: 0, step: 0.25 },
+      { id: 'hourly', label: 'Your hourly rate', defaultValue: 75, min: 0, step: 1, prefix: '$', help: 'Use your billable rate if saved hours turn into paid work.' },
+    ],
+    resultLabel: 'Net monthly value',
+    resultFormat: 'currency',
+    explainer:
+      '(Hours saved × hourly rate) − subscription cost. A negative result means the tool costs more than the time it frees. The breakdown shows the hours it must save just to break even.',
+    relatedSlugs: ['effective-hourly-after-unpaid-admin', 'overhead-loaded-hourly', 'billable-utilization'],
+    seoTitle: 'Software Subscription ROI Calculator',
+    seoDescription: 'See whether a monthly tool subscription pays for itself in time saved at your hourly rate.',
+  },
+  {
+    slug: 'side-hustle-goal-weeks',
+    title: 'Side hustle goal timeline',
+    description: 'How many weeks of side work it takes to reach a savings goal.',
+    category: 'Side hustle',
+    inputs: [
+      { id: 'goal', label: 'Savings goal', defaultValue: 5000, min: 0, step: 100, prefix: '$' },
+      { id: 'hourly', label: 'Net earnings per hour', defaultValue: 35, min: 0, step: 1, prefix: '$', help: 'After platform fees and costs.' },
+      { id: 'hoursPerWeek', label: 'Hours per week', defaultValue: 8, min: 0, step: 0.5 },
+    ],
+    resultLabel: 'Weeks to goal',
+    resultFormat: 'number',
+    resultSuffix: ' weeks',
+    explainer:
+      'Goal ÷ (net hourly × hours per week). Use what you actually keep per hour, not the listed price, so the timeline is honest.',
+    relatedSlugs: ['side-hustle-hourly-value', 'listed-rate-after-platform-fee', 'weekly-hours-to-hit-income-goal'],
+    seoTitle: 'Side Hustle Savings Goal Calculator',
+    seoDescription: 'Estimate how many weeks of side hustle work it takes to hit a savings goal.',
+  },
+  {
+    slug: 'travel-time-cost',
+    title: 'Travel time cost',
+    description: 'What on-site travel really costs you in time and kilometres.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'hours', label: 'Round-trip travel time', defaultValue: 1.5, min: 0, step: 0.25, suffix: 'hrs' },
+      { id: 'hourly', label: 'Your hourly rate', defaultValue: 90, min: 0, step: 1, prefix: '$' },
+      { id: 'km', label: 'Round-trip distance', defaultValue: 60, min: 0, step: 1, suffix: 'km' },
+      { id: 'perKm', label: 'Running cost per km', defaultValue: 0.88, min: 0, step: 0.01, prefix: '$', help: 'Fuel, wear, insurance share. Use your own figure.' },
+    ],
+    resultLabel: 'Travel cost to cover',
+    resultFormat: 'currency',
+    explainer:
+      '(Travel hours × hourly rate) + (km × running cost per km). Add this to an on-site quote or charge a call-out fee so travel does not quietly eat your margin.',
+    relatedSlugs: ['hourly-to-project-fee', 'profit-margin-on-job', 'rush-rate-premium'],
+    seoTitle: 'Travel Time Cost Calculator for Quotes',
+    seoDescription: 'Add travel time and per-km running costs to on-site freelance and trade quotes.',
+  },
 ];
 
 export function getCalculator(slug: string): Calculator | undefined {
