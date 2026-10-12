@@ -806,6 +806,78 @@ export const calculators: Calculator[] = [
     seoTitle: 'Travel Time Cost Calculator for Quotes',
     seoDescription: 'Add travel time and per-km running costs to on-site freelance and trade quotes.',
   },
+  {
+    slug: 'quote-with-contingency',
+    title: 'Quote with contingency buffer',
+    description: 'Add a contingency buffer to a fixed-price quote so surprises do not wipe out your margin.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'base', label: 'Base quote (before buffer)', defaultValue: 4000, min: 0, step: 50, prefix: '$' },
+      { id: 'buffer', label: 'Contingency buffer', defaultValue: 15, min: 0, max: 100, step: 1, suffix: '%', help: 'Riskier or vaguer scopes usually justify a bigger buffer.' },
+    ],
+    resultLabel: 'Quote including buffer',
+    resultFormat: 'currency',
+    explainer:
+      'Base quote × (1 + buffer). The breakdown shows the dollar amount of the buffer. Illustrative only: pick a buffer that reflects how uncertain the scope really is.',
+    relatedSlugs: ['scope-creep-hours-cost', 'hourly-to-project-fee', 'rush-rate-premium'],
+    seoTitle: 'Quote Contingency Buffer Calculator',
+    seoDescription: 'Add a percentage contingency buffer to a fixed-price freelance quote and see the final figure.',
+  },
+  {
+    slug: 'late-payment-hourly-hit',
+    title: 'Late payment hourly hit',
+    description: 'See how waiting for a late invoice quietly lowers your effective hourly rate.',
+    category: 'Invoicing & fees',
+    inputs: [
+      { id: 'invoice', label: 'Invoice amount', defaultValue: 3000, min: 0, step: 50, prefix: '$' },
+      { id: 'hours', label: 'Hours worked on the job', defaultValue: 30, min: 0, step: 0.5 },
+      { id: 'chaseHours', label: 'Hours spent chasing payment', defaultValue: 2, min: 0, step: 0.25 },
+    ],
+    resultLabel: 'Effective hourly rate after chasing',
+    resultFormat: 'currency',
+    explainer:
+      'Invoice ÷ (hours worked + hours chasing). The breakdown shows your rate if the invoice had been paid on time with no chasing, so you can see what late payment really costs you.',
+    relatedSlugs: ['invoice-late-fee', 'payment-terms-cash-gap', 'effective-hourly-after-unpaid-admin'],
+    seoTitle: 'Late Payment Effective Hourly Rate Calculator',
+    seoDescription: 'Work out how chasing a late invoice lowers your effective hourly rate as a freelancer.',
+  },
+  {
+    slug: 'weekly-budget-from-income',
+    title: 'Weekly spending budget',
+    description: 'Turn a monthly income into a weekly spending allowance after bills and savings.',
+    category: 'Cashflow & runway',
+    inputs: [
+      { id: 'income', label: 'Monthly take-home income', defaultValue: 5500, min: 0, step: 50, prefix: '$' },
+      { id: 'fixed', label: 'Fixed monthly bills', defaultValue: 2800, min: 0, step: 50, prefix: '$' },
+      { id: 'saving', label: 'Savings target', defaultValue: 10, min: 0, max: 100, step: 1, suffix: '%', help: 'Share of take-home you want to set aside first.' },
+    ],
+    resultLabel: 'Weekly spending allowance',
+    resultFormat: 'currency',
+    explainer:
+      '(Monthly income − fixed bills − savings) × 12 ÷ 52. Useful when income is uneven and you want one simple weekly number. Illustrative only, not financial advice.',
+    relatedSlugs: ['savings-rate', 'emergency-fund-target', 'runway-months'],
+    seoTitle: 'Weekly Budget from Monthly Income Calculator',
+    seoDescription: 'Convert monthly take-home income into a weekly spending allowance after bills and savings.',
+    illustrative: true,
+  },
+  {
+    slug: 'unpaid-meeting-cost',
+    title: 'Unpaid meeting cost',
+    description: 'Put a dollar figure on unbilled calls and meetings each month.',
+    category: 'Hours & productivity',
+    inputs: [
+      { id: 'hourly', label: 'Your hourly rate', defaultValue: 85, min: 0, step: 1, prefix: '$' },
+      { id: 'meetings', label: 'Unpaid meetings per month', defaultValue: 6, min: 0, step: 1 },
+      { id: 'length', label: 'Average length (incl. prep)', defaultValue: 1, min: 0, step: 0.25, suffix: 'hrs' },
+    ],
+    resultLabel: 'Monthly cost of unpaid meetings',
+    resultFormat: 'currency',
+    explainer:
+      'Hourly rate × meetings × average length. The breakdown shows total unbilled hours and the yearly figure, so you can decide whether to charge for calls or cap them.',
+    relatedSlugs: ['effective-hourly-after-unpaid-admin', 'billable-utilization', 'scope-creep-hours-cost'],
+    seoTitle: 'Unpaid Meeting Cost Calculator for Freelancers',
+    seoDescription: 'Calculate what unbilled calls and meetings cost you each month at your hourly rate.',
+  },
 ];
 
 export function getCalculator(slug: string): Calculator | undefined {

@@ -611,4 +611,60 @@ export const computeMap: Record<string, ComputeFn> = {
       ],
     };
   },
+
+  'quote-with-contingency': (v) => {
+    const b = v.buffer / 100;
+    if (b < 0) return { primary: 0, format: 'currency', error: 'Enter a buffer of zero or more.' };
+    const amount = v.base * b;
+    return {
+      primary: v.base + amount,
+      format: 'currency',
+      breakdown: [
+        { label: 'Buffer amount', value: amount, format: 'currency' },
+        { label: 'Base quote', value: v.base, format: 'currency' },
+      ],
+    };
+  },
+
+  'late-payment-hourly-hit': (v) => {
+    const total = v.hours + v.chaseHours;
+    const actual = safeDiv(v.invoice, total);
+    if (actual === null) return { primary: 0, format: 'currency', error: 'Enter hours worked above zero.' };
+    const onTime = safeDiv(v.invoice, v.hours) ?? 0;
+    return {
+      primary: actual,
+      format: 'currency',
+      breakdown: [
+        { label: 'Rate if paid on time', value: onTime, format: 'currency' },
+        { label: 'Rate lost to chasing', value: Math.max(0, onTime - actual), format: 'currency' },
+      ],
+    };
+  },
+
+  'weekly-budget-from-income': (v) => {
+    const saved = v.income * (v.saving / 100);
+    const monthly = v.income - v.fixed - saved;
+    const weekly = (monthly * 12) / 52;
+    return {
+      primary: weekly,
+      format: 'currency',
+      breakdown: [
+        { label: 'Monthly left to spend', value: monthly, format: 'currency' },
+        { label: 'Monthly savings', value: saved, format: 'currency' },
+      ],
+    };
+  },
+
+  'unpaid-meeting-cost': (v) => {
+    const hours = v.meetings * v.length;
+    const monthly = hours * v.hourly;
+    return {
+      primary: monthly,
+      format: 'currency',
+      breakdown: [
+        { label: 'Unbilled hours per month', value: hours, format: 'hours' },
+        { label: 'Cost per year', value: monthly * 12, format: 'currency' },
+      ],
+    };
+  },
 };
