@@ -667,4 +667,58 @@ export const computeMap: Record<string, ComputeFn> = {
       ],
     };
   },
+
+  'price-per-word-from-hourly': (v) => {
+    const perWord = safeDiv(v.hourly, v.wph);
+    if (perWord === null) return { primary: 0, format: 'currency', error: 'Enter words per hour above zero.' };
+    return {
+      primary: perWord,
+      format: 'currency',
+      breakdown: [
+        { label: 'Fee for this job', value: perWord * v.words, format: 'currency' },
+        { label: 'Hours for this job', value: v.words / v.wph, format: 'hours' },
+      ],
+    };
+  },
+
+  'equipment-cost-per-billable-hour': (v) => {
+    const perHour = safeDiv(v.cost, v.years * v.hoursPerYear);
+    if (perHour === null) return { primary: 0, format: 'currency', error: 'Enter a useful life and billable hours above zero.' };
+    return {
+      primary: perHour,
+      format: 'currency',
+      breakdown: [
+        { label: 'Cost per year', value: v.cost / v.years, format: 'currency' },
+        { label: 'Total billable hours over life', value: v.years * v.hoursPerYear, format: 'hours' },
+      ],
+    };
+  },
+
+  'extra-revisions-cost': (v) => {
+    const hours = v.rounds * v.hoursPerRound;
+    return {
+      primary: hours * v.hourly,
+      format: 'currency',
+      breakdown: [
+        { label: 'Extra hours', value: hours, format: 'hours' },
+        { label: 'Cost per round', value: v.hoursPerRound * v.hourly, format: 'currency' },
+      ],
+    };
+  },
+
+  'pay-yourself-monthly': (v) => {
+    const share = (v.tax + v.buffer) / 100;
+    if (share > 1) return { primary: 0, format: 'currency', error: 'Tax and buffer together cannot exceed 100%.' };
+    const profit = v.revenue - v.expenses;
+    const pay = Math.max(0, profit) * (1 - share);
+    return {
+      primary: pay,
+      format: 'currency',
+      breakdown: [
+        { label: 'Monthly profit', value: profit, format: 'currency' },
+        { label: 'Set aside for tax', value: Math.max(0, profit) * (v.tax / 100), format: 'currency' },
+        { label: 'Kept as buffer', value: Math.max(0, profit) * (v.buffer / 100), format: 'currency' },
+      ],
+    };
+  },
 };

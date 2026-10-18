@@ -878,6 +878,79 @@ export const calculators: Calculator[] = [
     seoTitle: 'Unpaid Meeting Cost Calculator for Freelancers',
     seoDescription: 'Calculate what unbilled calls and meetings cost you each month at your hourly rate.',
   },
+  {
+    slug: 'price-per-word-from-hourly',
+    title: 'Price per word from hourly rate',
+    description: 'Convert your target hourly rate into a per-word price for writing and editing work.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'hourly', label: 'Target hourly rate', defaultValue: 80, min: 0, step: 1, prefix: '$' },
+      { id: 'wph', label: 'Finished words per hour', defaultValue: 500, min: 0, step: 10, help: 'Include research and self-editing time, not just typing speed.' },
+      { id: 'words', label: 'Words in this job', defaultValue: 2000, min: 0, step: 100 },
+    ],
+    resultLabel: 'Price per word',
+    resultFormat: 'currency',
+    explainer:
+      'Hourly rate ÷ finished words per hour. The breakdown shows the fee for a job of the length you entered. Illustrative only: real speed varies with topic and client feedback.',
+    relatedSlugs: ['hourly-to-project-fee', 'extra-revisions-cost', 'quote-with-contingency'],
+    seoTitle: 'Price Per Word Calculator from Hourly Rate',
+    seoDescription: 'Turn a freelance writing hourly rate into a per-word price and a total fee for any word count.',
+  },
+  {
+    slug: 'equipment-cost-per-billable-hour',
+    title: 'Equipment cost per billable hour',
+    description: 'Spread the cost of a laptop, camera or tools across the billable hours it will earn you.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'cost', label: 'Equipment cost', defaultValue: 3000, min: 0, step: 50, prefix: '$' },
+      { id: 'years', label: 'Expected useful life', defaultValue: 3, min: 0, step: 0.5, suffix: 'years' },
+      { id: 'hoursPerYear', label: 'Billable hours per year', defaultValue: 1200, min: 0, step: 10 },
+    ],
+    resultLabel: 'Equipment cost per billable hour',
+    resultFormat: 'currency',
+    explainer:
+      'Cost ÷ (useful life × billable hours per year). Add this to your hourly rate so gear pays for itself. Illustrative only, and not a tax depreciation figure.',
+    relatedSlugs: ['overhead-loaded-hourly', 'tool-subscription-payback', 'break-even-hourly'],
+    seoTitle: 'Equipment Cost Per Billable Hour Calculator',
+    seoDescription: 'Work out how much of your hourly rate should cover laptops, cameras and tools over their lifespan.',
+  },
+  {
+    slug: 'extra-revisions-cost',
+    title: 'Extra revision rounds cost',
+    description: 'Price the revision rounds a client asks for beyond what your quote included.',
+    category: 'Invoicing & fees',
+    inputs: [
+      { id: 'rounds', label: 'Extra revision rounds', defaultValue: 2, min: 0, step: 1 },
+      { id: 'hoursPerRound', label: 'Hours per round', defaultValue: 1.5, min: 0, step: 0.25 },
+      { id: 'hourly', label: 'Hourly rate', defaultValue: 90, min: 0, step: 1, prefix: '$' },
+    ],
+    resultLabel: 'Fee for extra revisions',
+    resultFormat: 'currency',
+    explainer:
+      'Extra rounds × hours per round × hourly rate. Useful for a change-order line or for deciding how many rounds to include up front. Illustrative only.',
+    relatedSlugs: ['scope-creep-hours-cost', 'price-per-word-from-hourly', 'quote-with-contingency'],
+    seoTitle: 'Extra Revisions Cost Calculator for Freelancers',
+    seoDescription: 'Calculate what extra revision rounds beyond your quote are worth at your hourly rate.',
+  },
+  {
+    slug: 'pay-yourself-monthly',
+    title: 'How much to pay yourself monthly',
+    description: 'Estimate a steady monthly amount to pay yourself from uneven freelance revenue.',
+    category: 'Cashflow & runway',
+    inputs: [
+      { id: 'revenue', label: 'Average monthly revenue', defaultValue: 8000, min: 0, step: 50, prefix: '$' },
+      { id: 'expenses', label: 'Monthly business expenses', defaultValue: 900, min: 0, step: 25, prefix: '$' },
+      { id: 'tax', label: 'Tax set-aside', defaultValue: 25, min: 0, max: 100, step: 1, suffix: '%', help: 'Share of profit you put aside for tax. Check your own rate.' },
+      { id: 'buffer', label: 'Business buffer kept back', defaultValue: 10, min: 0, max: 100, step: 1, suffix: '%', help: 'Share of profit left in the business for slow months.' },
+    ],
+    resultLabel: 'Monthly amount to pay yourself',
+    resultFormat: 'currency',
+    explainer:
+      'Profit = revenue − expenses. You pay yourself profit × (1 − tax % − buffer %). Illustrative only, not tax or financial advice.',
+    relatedSlugs: ['tax-set-aside-percent', 'runway-months', 'weekly-budget-from-income'],
+    seoTitle: 'Pay Yourself Salary Calculator for Freelancers',
+    seoDescription: 'Estimate a steady monthly self-pay from irregular freelance income after expenses, tax and a buffer.',
+  },
 ];
 
 export function getCalculator(slug: string): Calculator | undefined {
