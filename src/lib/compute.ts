@@ -721,4 +721,59 @@ export const computeMap: Record<string, ComputeFn> = {
       ],
     };
   },
+
+  'rate-increase-annual-gain': (v) => {
+    const pct = safeDiv(v.newRate - v.oldRate, v.oldRate);
+    if (pct === null) return { primary: 0, format: 'currency', error: 'Enter a current rate above zero.' };
+    const gain = (v.newRate - v.oldRate) * v.hoursPerYear;
+    return {
+      primary: gain,
+      format: 'currency',
+      breakdown: [
+        { label: 'Rate increase', value: pct * 100, format: 'percent' },
+        { label: 'Extra per month', value: gain / 12, format: 'currency' },
+      ],
+    };
+  },
+
+  'early-payment-discount-cost': (v) => {
+    const days = v.netDays - v.discountDays;
+    if (days <= 0 || v.discount >= 100) return { primary: 0, format: 'percent', error: 'Normal terms must be longer than the discount window, and the discount under 100%.' };
+    const annual = (v.discount / (100 - v.discount)) * (365 / days) * 100;
+    return {
+      primary: annual,
+      format: 'percent',
+      breakdown: [
+        { label: 'Discount given on this invoice', value: v.invoice * (v.discount / 100), format: 'currency' },
+        { label: 'Paid this many days sooner', value: days, format: 'days' },
+      ],
+    };
+  },
+
+  'clients-needed-for-income-goal': (v) => {
+    const raw = safeDiv(v.goal, v.perClient);
+    if (raw === null) return { primary: 0, format: 'number', error: 'Enter an average fee per client above zero.' };
+    const clients = Math.ceil(raw);
+    return {
+      primary: clients,
+      format: 'number',
+      breakdown: [
+        { label: 'Monthly income at that many clients', value: clients * v.perClient, format: 'currency' },
+        { label: 'New clients needed per year to replace churn', value: Math.ceil(clients * (v.churn / 100)), format: 'number' },
+      ],
+    };
+  },
+
+  'vehicle-cost-per-job': (v) => {
+    const running = v.distance * v.costPerKm;
+    const time = v.driveHours * v.hourly;
+    return {
+      primary: running + time,
+      format: 'currency',
+      breakdown: [
+        { label: 'Vehicle running cost', value: running, format: 'currency' },
+        { label: 'Value of drive time', value: time, format: 'currency' },
+      ],
+    };
+  },
 };

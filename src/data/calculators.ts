@@ -951,6 +951,80 @@ export const calculators: Calculator[] = [
     seoTitle: 'Pay Yourself Salary Calculator for Freelancers',
     seoDescription: 'Estimate a steady monthly self-pay from irregular freelance income after expenses, tax and a buffer.',
   },
+  {
+    slug: 'rate-increase-annual-gain',
+    title: 'Rate increase: yearly income gain',
+    description: 'See the percentage rise and extra yearly income from moving your hourly rate up.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'oldRate', label: 'Current hourly rate', defaultValue: 75, min: 0, step: 1, prefix: '$' },
+      { id: 'newRate', label: 'New hourly rate', defaultValue: 85, min: 0, step: 1, prefix: '$' },
+      { id: 'hoursPerYear', label: 'Billable hours per year', defaultValue: 1200, min: 0, step: 10 },
+    ],
+    resultLabel: 'Extra income per year',
+    resultFormat: 'currency',
+    explainer:
+      '(New rate − current rate) × billable hours per year. The breakdown shows the percentage rise and the extra per month. Illustrative only: it assumes you keep the same hours after the rise.',
+    relatedSlugs: ['raise-vs-client-loss', 'hours-freed-by-rate-raise', 'raise-needed-to-keep-net'],
+    seoTitle: 'Rate Increase Calculator: Extra Yearly Income',
+    seoDescription: 'Calculate the percentage increase and extra annual income from raising your freelance hourly rate.',
+  },
+  {
+    slug: 'early-payment-discount-cost',
+    title: 'Early payment discount cost',
+    description: 'Find the real yearly cost of offering clients a discount to pay early.',
+    category: 'Invoicing & fees',
+    inputs: [
+      { id: 'invoice', label: 'Invoice amount', defaultValue: 5000, min: 0, step: 50, prefix: '$' },
+      { id: 'discount', label: 'Early payment discount', defaultValue: 2, min: 0, max: 99, step: 0.5, suffix: '%' },
+      { id: 'discountDays', label: 'Discount if paid within', defaultValue: 10, min: 0, step: 1, suffix: 'days' },
+      { id: 'netDays', label: 'Normal payment terms', defaultValue: 30, min: 0, step: 1, suffix: 'days' },
+    ],
+    resultLabel: 'Equivalent yearly cost of the discount',
+    resultFormat: 'percent',
+    explainer:
+      'A "2/10 net 30" style offer gives up the discount to get paid (terms − discount days) sooner. Yearly cost ≈ discount ÷ (100 − discount) × 365 ÷ days gained. Compare it with what borrowing would cost you. Illustrative only.',
+    relatedSlugs: ['net-30-cash-cost', 'payment-terms-cash-gap', 'invoice-late-fee'],
+    seoTitle: 'Early Payment Discount Cost Calculator (2/10 Net 30)',
+    seoDescription: 'Work out the annualised cost of offering an early payment discount on freelance invoices.',
+  },
+  {
+    slug: 'clients-needed-for-income-goal',
+    title: 'Clients needed for an income goal',
+    description: 'Work out how many retainer or regular clients you need to hit a monthly income target.',
+    category: 'Cashflow & runway',
+    inputs: [
+      { id: 'goal', label: 'Monthly income goal', defaultValue: 8000, min: 0, step: 100, prefix: '$' },
+      { id: 'perClient', label: 'Average monthly fee per client', defaultValue: 1500, min: 0, step: 50, prefix: '$' },
+      { id: 'churn', label: 'Clients lost per year', defaultValue: 20, min: 0, max: 100, step: 1, suffix: '%', help: 'Rough share of clients who leave each year.' },
+    ],
+    resultLabel: 'Clients needed',
+    resultFormat: 'number',
+    explainer:
+      'Goal ÷ average monthly fee, rounded up. The breakdown estimates how many new clients a year you need just to replace the ones who leave. Illustrative only.',
+    relatedSlugs: ['retainer-to-hourly-equivalent', 'client-concentration-risk', 'weekly-hours-to-hit-income-goal'],
+    seoTitle: 'How Many Clients Do I Need? Freelance Income Calculator',
+    seoDescription: 'Calculate how many retainer clients you need to reach a monthly freelance income goal, including churn.',
+  },
+  {
+    slug: 'vehicle-cost-per-job',
+    title: 'Vehicle cost per job',
+    description: 'Add up the running cost and drive time of travelling to an on-site job.',
+    category: 'Side hustle',
+    inputs: [
+      { id: 'distance', label: 'Round-trip distance', defaultValue: 40, min: 0, step: 1, suffix: 'km' },
+      { id: 'costPerKm', label: 'Vehicle running cost per km', defaultValue: 0.85, min: 0, step: 0.01, prefix: '$', help: 'Fuel, wear and insurance spread per km. Use your own figure.' },
+      { id: 'driveHours', label: 'Drive time (round trip)', defaultValue: 1, min: 0, step: 0.25, suffix: 'hours' },
+      { id: 'hourly', label: 'Your hourly rate', defaultValue: 60, min: 0, step: 1, prefix: '$' },
+    ],
+    resultLabel: 'Total travel cost for the job',
+    resultFormat: 'currency',
+    explainer:
+      'Distance × cost per km, plus drive time × your hourly rate. Use it to set a call-out fee or minimum job price. Illustrative only, and not a tax deduction rate.',
+    relatedSlugs: ['travel-time-cost', 'side-hustle-hourly-value', 'profit-margin-on-job'],
+    seoTitle: 'Vehicle Cost Per Job Calculator (Call-Out Fee)',
+    seoDescription: 'Estimate the vehicle running cost and drive time of an on-site job to set a fair call-out fee.',
+  },
 ];
 
 export function getCalculator(slug: string): Calculator | undefined {
