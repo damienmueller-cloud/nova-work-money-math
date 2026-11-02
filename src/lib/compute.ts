@@ -776,4 +776,58 @@ export const computeMap: Record<string, ComputeFn> = {
       ],
     };
   },
+
+  'bundle-package-price': (v) => {
+    const full = v.unitPrice * v.units;
+    const price = full * (1 - v.discount / 100);
+    const per = safeDiv(price, v.units);
+    if (per === null) return { primary: 0, format: 'currency', error: 'Enter at least one session.' };
+    return {
+      primary: price,
+      format: 'currency',
+      breakdown: [
+        { label: 'Effective price per session', value: per, format: 'currency' },
+        { label: 'Client saves', value: full - price, format: 'currency' },
+      ],
+    };
+  },
+
+  'late-cancellation-fee': (v) => {
+    const pctFee = v.booking * (v.feePercent / 100);
+    return {
+      primary: pctFee + v.sunkCosts,
+      format: 'currency',
+      breakdown: [
+        { label: 'Percentage fee', value: pctFee, format: 'currency' },
+        { label: 'Costs already spent', value: v.sunkCosts, format: 'currency' },
+      ],
+    };
+  },
+
+  'handmade-product-price': (v) => {
+    const cost = safeDiv(v.materials + v.hours * v.hourly, v.units);
+    if (cost === null) return { primary: 0, format: 'currency', error: 'Enter at least one item in the batch.' };
+    const price = cost * (1 + v.margin / 100);
+    return {
+      primary: price,
+      format: 'currency',
+      breakdown: [
+        { label: 'Cost per item (materials + time)', value: cost, format: 'currency' },
+        { label: 'Profit per item', value: price - cost, format: 'currency' },
+      ],
+    };
+  },
+
+  'international-payment-fee-loss': (v) => {
+    const lost = v.amount * (v.fxMargin / 100) + v.fixedFee;
+    const pct = safeDiv(lost, v.amount);
+    return {
+      primary: v.amount - lost,
+      format: 'currency',
+      breakdown: [
+        { label: 'Total lost to fees', value: lost, format: 'currency' },
+        { label: 'Lost as % of payment', value: (pct ?? 0) * 100, format: 'percent' },
+      ],
+    };
+  },
 };

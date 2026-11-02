@@ -1025,6 +1025,80 @@ export const calculators: Calculator[] = [
     seoTitle: 'Vehicle Cost Per Job Calculator (Call-Out Fee)',
     seoDescription: 'Estimate the vehicle running cost and drive time of an on-site job to set a fair call-out fee.',
   },
+  {
+    slug: 'bundle-package-price',
+    title: 'Bundle package price',
+    description: 'Price a pack of sessions or deliverables with a bundle discount and see what each one works out to.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'unitPrice', label: 'Normal price per session', defaultValue: 120, min: 0, step: 1, prefix: '$' },
+      { id: 'units', label: 'Sessions in the bundle', defaultValue: 5, min: 1, step: 1 },
+      { id: 'discount', label: 'Bundle discount', defaultValue: 10, min: 0, max: 100, step: 1, suffix: '%' },
+    ],
+    resultLabel: 'Bundle price',
+    resultFormat: 'currency',
+    explainer:
+      'Normal price × sessions × (1 − discount %). The breakdown shows the effective price per session and how much the client saves. Illustrative only.',
+    relatedSlugs: ['discount-hit-on-fee', 'retainer-to-hourly-equivalent', 'hourly-to-project-fee'],
+    seoTitle: 'Bundle Package Price Calculator for Freelancers',
+    seoDescription: 'Work out a discounted package price for multiple sessions and the effective price per session.',
+  },
+  {
+    slug: 'late-cancellation-fee',
+    title: 'Late cancellation fee',
+    description: 'Estimate a fair fee when a client cancels a booked job at short notice.',
+    category: 'Invoicing & fees',
+    inputs: [
+      { id: 'booking', label: 'Booked job value', defaultValue: 600, min: 0, step: 10, prefix: '$' },
+      { id: 'feePercent', label: 'Cancellation fee', defaultValue: 50, min: 0, max: 100, step: 5, suffix: '%', help: 'Share of the job value you charge. Set it in your own terms up front.' },
+      { id: 'sunkCosts', label: 'Costs already spent', defaultValue: 80, min: 0, step: 5, prefix: '$', help: 'Materials, bookings or prep you cannot get back.' },
+    ],
+    resultLabel: 'Cancellation fee to charge',
+    resultFormat: 'currency',
+    explainer:
+      'Booked value × cancellation fee %, plus costs already spent. Only charge what your agreed terms allow. Illustrative only, not legal advice.',
+    relatedSlugs: ['invoice-late-fee', 'deposit-cash-cover', 'scope-creep-hours-cost'],
+    seoTitle: 'Late Cancellation Fee Calculator',
+    seoDescription: 'Estimate a short-notice cancellation fee for a booked freelance or side hustle job, including sunk costs.',
+  },
+  {
+    slug: 'handmade-product-price',
+    title: 'Handmade product price',
+    description: 'Price a handmade or small-batch product from materials, your time and a margin.',
+    category: 'Side hustle',
+    inputs: [
+      { id: 'materials', label: 'Materials for the batch', defaultValue: 150, min: 0, step: 5, prefix: '$' },
+      { id: 'hours', label: 'Hours to make the batch', defaultValue: 6, min: 0, step: 0.5, suffix: 'hours' },
+      { id: 'hourly', label: 'Your hourly rate', defaultValue: 30, min: 0, step: 1, prefix: '$' },
+      { id: 'units', label: 'Items in the batch', defaultValue: 20, min: 1, step: 1 },
+      { id: 'margin', label: 'Profit margin on top', defaultValue: 30, min: 0, max: 500, step: 5, suffix: '%' },
+    ],
+    resultLabel: 'Price per item',
+    resultFormat: 'currency',
+    explainer:
+      'Cost per item = (materials + hours × hourly rate) ÷ items. Price = cost per item × (1 + margin %). Selling fees and postage are not included. Illustrative only.',
+    relatedSlugs: ['side-hustle-hourly-value', 'profit-margin-on-job', 'listed-rate-after-platform-fee'],
+    seoTitle: 'Handmade Product Pricing Calculator',
+    seoDescription: 'Price handmade or small-batch products from materials, labour time and a profit margin.',
+  },
+  {
+    slug: 'international-payment-fee-loss',
+    title: 'International payment fee loss',
+    description: 'See how much of an overseas client payment is lost to exchange-rate margin and transfer fees.',
+    category: 'Invoicing & fees',
+    inputs: [
+      { id: 'amount', label: 'Payment amount (in your currency)', defaultValue: 2000, min: 0, step: 50, prefix: '$' },
+      { id: 'fxMargin', label: 'Exchange-rate margin', defaultValue: 3, min: 0, max: 100, step: 0.1, suffix: '%', help: 'Gap between the rate you get and the mid-market rate. Check your own provider.' },
+      { id: 'fixedFee', label: 'Fixed transfer fee', defaultValue: 15, min: 0, step: 1, prefix: '$' },
+    ],
+    resultLabel: 'Amount you actually receive',
+    resultFormat: 'currency',
+    explainer:
+      'Received = amount × (1 − exchange margin %) − fixed fee. The breakdown shows the total lost and as a % of the payment. Illustrative only; real rates and fees vary.',
+    relatedSlugs: ['currency-markup-on-quote', 'platform-fee-cut', 'listed-rate-after-platform-fee'],
+    seoTitle: 'International Payment Fee Calculator (FX Margin)',
+    seoDescription: 'Estimate how much an overseas client payment loses to exchange-rate margins and transfer fees.',
+  },
 ];
 
 export function getCalculator(slug: string): Calculator | undefined {
