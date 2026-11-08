@@ -1099,6 +1099,80 @@ export const calculators: Calculator[] = [
     seoTitle: 'International Payment Fee Calculator (FX Margin)',
     seoDescription: 'Estimate how much an overseas client payment loses to exchange-rate margins and transfer fees.',
   },
+  {
+    slug: 'weekend-work-premium',
+    title: 'Weekend work premium',
+    description: 'Work out what to charge when a job lands on a weekend or evening.',
+    category: 'Rates & pricing',
+    inputs: [
+      { id: 'hours', label: 'Hours of weekend work', defaultValue: 6, min: 0, step: 0.5, suffix: 'hrs' },
+      { id: 'hourly', label: 'Normal hourly rate', defaultValue: 80, min: 0, step: 1, prefix: '$' },
+      { id: 'premium', label: 'Weekend premium', defaultValue: 25, min: 0, max: 300, step: 5, suffix: '%' },
+    ],
+    resultLabel: 'Weekend job price',
+    resultFormat: 'currency',
+    explainer:
+      'Hours × hourly rate × (1 + premium %). The breakdown shows the extra you earn over your normal rate. Illustrative only.',
+    relatedSlugs: ['rush-rate-premium', 'hourly-to-project-fee', 'travel-time-cost'],
+    seoTitle: 'Weekend Work Premium Calculator',
+    seoDescription: 'Add a weekend or after-hours premium to your hourly rate and see the job price.',
+  },
+  {
+    slug: 'quote-win-rate-needed',
+    title: 'Quote win rate needed',
+    description: 'How many quotes you need to send to hit a monthly income goal.',
+    category: 'Hours & productivity',
+    inputs: [
+      { id: 'goal', label: 'Monthly income goal', defaultValue: 6000, min: 0, step: 100, prefix: '$' },
+      { id: 'avgJob', label: 'Average job value', defaultValue: 800, min: 1, step: 50, prefix: '$' },
+      { id: 'winRate', label: 'Quote win rate', defaultValue: 30, min: 1, max: 100, step: 1, suffix: '%' },
+    ],
+    resultLabel: 'Quotes to send per month',
+    resultFormat: 'number',
+    explainer:
+      'Jobs needed = goal ÷ average job value. Quotes needed = jobs ÷ win rate. Rounded up in practice. Illustrative only.',
+    relatedSlugs: ['clients-needed-for-income-goal', 'proposal-expected-value', 'breakeven-projects-per-month'],
+    seoTitle: 'Quotes Needed to Hit Income Goal Calculator',
+    seoDescription: 'Estimate how many quotes to send each month given your win rate and average job size.',
+  },
+  {
+    slug: 'unpaid-quote-time-cost',
+    title: 'Unpaid quoting time cost',
+    description: 'See what time spent writing quotes that do not convert really costs you.',
+    category: 'Hours & productivity',
+    inputs: [
+      { id: 'quotes', label: 'Quotes per month', defaultValue: 12, min: 0, step: 1 },
+      { id: 'hoursEach', label: 'Hours per quote', defaultValue: 1.5, min: 0, step: 0.25, suffix: 'hrs' },
+      { id: 'winRate', label: 'Quote win rate', defaultValue: 30, min: 0, max: 100, step: 1, suffix: '%' },
+      { id: 'hourly', label: 'Your hourly rate', defaultValue: 70, min: 0, step: 1, prefix: '$' },
+    ],
+    resultLabel: 'Monthly cost of lost quotes',
+    resultFormat: 'currency',
+    explainer:
+      'Quotes × (1 − win rate) × hours per quote × hourly rate. Consider building this into the price of jobs you do win. Illustrative only.',
+    relatedSlugs: ['quote-win-rate-needed', 'effective-hourly-after-unpaid-admin', 'proposal-expected-value'],
+    seoTitle: 'Unpaid Quoting Time Cost Calculator',
+    seoDescription: 'Estimate the monthly cost of time spent on quotes that never turn into paid work.',
+  },
+  {
+    slug: 'side-hustle-profit-after-costs',
+    title: 'Side hustle monthly profit',
+    description: 'Monthly profit from a side hustle after platform fees and running costs.',
+    category: 'Side hustle',
+    inputs: [
+      { id: 'revenue', label: 'Monthly sales', defaultValue: 1500, min: 0, step: 50, prefix: '$' },
+      { id: 'feePercent', label: 'Platform / payment fees', defaultValue: 10, min: 0, max: 100, step: 0.5, suffix: '%' },
+      { id: 'costs', label: 'Other monthly costs', defaultValue: 200, min: 0, step: 10, prefix: '$' },
+      { id: 'hours', label: 'Hours worked', defaultValue: 30, min: 0, step: 1, suffix: 'hrs' },
+    ],
+    resultLabel: 'Monthly profit',
+    resultFormat: 'currency',
+    explainer:
+      'Sales − (sales × fee %) − other costs. The breakdown shows profit per hour worked. Before tax; illustrative only.',
+    relatedSlugs: ['side-hustle-hourly-value', 'side-hustle-goal-weeks', 'listed-rate-after-platform-fee'],
+    seoTitle: 'Side Hustle Profit Calculator',
+    seoDescription: 'Work out monthly side hustle profit after fees and costs, plus profit per hour.',
+  },
 ];
 
 export function getCalculator(slug: string): Calculator | undefined {

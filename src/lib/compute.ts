@@ -828,6 +828,48 @@ export const computeMap: Record<string, ComputeFn> = {
         { label: 'Total lost to fees', value: lost, format: 'currency' },
         { label: 'Lost as % of payment', value: (pct ?? 0) * 100, format: 'percent' },
       ],
+    
+  'weekend-work-premium': (v) => {
+    const normal = v.hours * v.hourly;
+    const price = normal * (1 + v.premium / 100);
+    return {
+      primary: price,
+      format: 'currency',
+      breakdown: [
+        { label: 'At normal rate', value: normal, format: 'currency' },
+        { label: 'Extra from premium', value: price - normal, format: 'currency' },
+      ],
     };
+  },
+
+  'quote-win-rate-needed': (v) => {
+    const jobs = safeDiv(v.goal, v.avgJob);
+    const quotes = jobs === null ? null : safeDiv(jobs, v.winRate / 100);
+    if (jobs === null || quotes === null) return { primary: 0, format: 'number', error: 'Enter a job value and win rate above zero.' };
+    return {
+      primary: quotes,
+      format: 'number',
+      breakdown: [{ label: 'Jobs you need to win', value: jobs, format: 'number' }],
+    };
+  },
+
+  'unpaid-quote-time-cost': (v) => {
+    const lostHours = v.quotes * (1 - v.winRate / 100) * v.hoursEach;
+    return {
+      primary: lostHours * v.hourly,
+      format: 'currency',
+      breakdown: [{ label: 'Hours spent on lost quotes', value: lostHours, format: 'number' }],
+    };
+  },
+
+  'side-hustle-profit-after-costs': (v) => {
+    const profit = v.revenue - v.revenue * (v.feePercent / 100) - v.costs;
+    return {
+      primary: profit,
+      format: 'currency',
+      breakdown: [{ label: 'Profit per hour worked', value: safeDiv(profit, v.hours) ?? 0, format: 'currency' }],
+    };
+  },
+};
   },
 };
