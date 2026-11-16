@@ -872,4 +872,42 @@ export const computeMap: Record<string, ComputeFn> = {
   },
 };
   },
+  'minimum-project-fee': (v) => {
+    const hours = v.setupHours + v.minHours;
+    return {
+      primary: hours * v.hourly,
+      format: 'currency',
+      breakdown: [{ label: 'Total hours covered', value: hours, format: 'number' }],
+    };
+  },
+
+  'revision-round-cost': (v) => {
+    const hours = v.hoursPerRound * v.rounds;
+    return {
+      primary: hours * v.hourly,
+      format: 'currency',
+      breakdown: [{ label: 'Extra hours', value: hours, format: 'number' }],
+    };
+  },
+
+  'monthly-expense-cover-hours': (v) => {
+    const raw = safeDiv(v.expenses, v.hourly);
+    if (raw === null) return { primary: 0, format: 'number', error: 'Enter an hourly rate above zero.' };
+    const hrs = Math.ceil(raw);
+    return {
+      primary: hrs,
+      format: 'number',
+      breakdown: [{ label: 'Hours per week (approx.)', value: Math.ceil(hrs / 4.33), format: 'number' }],
+    };
+  },
+
+  'client-lifetime-value': (v) => {
+    const rev = v.monthlyFee * v.months;
+    return {
+      primary: rev,
+      format: 'currency',
+      breakdown: [{ label: 'Estimated profit per client', value: rev * (v.margin / 100), format: 'currency' }],
+    };
+  },
+
 };
