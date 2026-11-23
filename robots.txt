@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://damienmueller-cloud.github.io/nova-work-money-math/sitemap-index.xml
