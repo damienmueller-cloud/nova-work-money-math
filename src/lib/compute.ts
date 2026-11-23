@@ -910,4 +910,36 @@ export const computeMap: Record<string, ComputeFn> = {
     };
   },
 
+  'hourly-rate-after-unpaid-hours': (v) => {
+    const total = v.paidHours + v.unpaidHours;
+    const real = safeDiv(v.fee, total);
+    if (real === null) return { primary: 0, format: 'currency', error: 'Enter some hours above zero.' };
+    return {
+      primary: real,
+      format: 'currency',
+      breakdown: [{ label: 'Planned hourly rate', value: v.paidHours > 0 ? v.fee / v.paidHours : 0, format: 'currency' }],
+    };
+  },
+
+  'monthly-income-from-day-rate': (v) => ({
+    primary: v.dayRate * v.days,
+    format: 'currency',
+    breakdown: [{ label: 'Yearly equivalent (12 months)', value: v.dayRate * v.days * 12, format: 'currency' }],
+  }),
+
+  'invoice-total-with-late-fees': (v) => {
+    const fee = v.invoice * (v.rate / 100) * v.months;
+    return {
+      primary: v.invoice + fee,
+      format: 'currency',
+      breakdown: [{ label: 'Late fees', value: fee, format: 'currency' }],
+    };
+  },
+
+  'days-off-income-cost': (v) => ({
+    primary: v.dayRate * v.daysOff,
+    format: 'currency',
+    breakdown: [{ label: 'Weeks of work (5-day weeks)', value: v.daysOff / 5, format: 'number' }],
+  }),
+
 };
